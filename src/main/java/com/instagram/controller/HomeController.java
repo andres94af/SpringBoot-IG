@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("")
 public class HomeController {
@@ -15,8 +17,9 @@ public class HomeController {
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 	
 	@GetMapping("/")
-	public String inicio(Model model) {
+	public String inicio(Model model, HttpSession session) {
 		model.addAttribute("titulo", "Inicio");
+		log.info("ID del usuario logueado: {}", session.getAttribute("idUsuario"));
 		log.info("Bienvenido!");
 		return "usuario/inicio";
 	}
