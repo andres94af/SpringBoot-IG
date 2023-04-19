@@ -6,16 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "AUTORIZACIONES")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Autorizacion {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -23,5 +18,54 @@ public class Autorizacion {
 	private Usuario usuario;
 	private boolean activo;
 	private String rol;
+
+	public Autorizacion() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Autorizacion(Usuario usuario, boolean activo, String rol) {
+		super();
+		this.usuario = usuario;
+		this.activo = activo;
+		this.rol = rol;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	@Override
+	public String toString() {
+		return "Autorizacion [id=" + id + ", usuario=" + usuario.getNombre() + ", activo=" + activo + ", rol=" + rol
+				+ "]";
+	}
 
 }

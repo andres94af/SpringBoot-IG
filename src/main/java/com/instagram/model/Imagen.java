@@ -7,16 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "IMAGENES")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Imagen {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -25,5 +20,54 @@ public class Imagen {
 	private String url;
 	@ManyToOne
 	private Publicacion publicacion;
+
+	public Imagen() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Imagen(Usuario usuario, String url, Publicacion publicacion) {
+		super();
+		this.usuario = usuario;
+		this.url = url;
+		this.publicacion = publicacion;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Publicacion getPublicacion() {
+		return publicacion;
+	}
+
+	public void setPublicacion(Publicacion publicacion) {
+		this.publicacion = publicacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Imagen [id=" + id + ", usuario=" + usuario.getNombre() + ", url=" + url + ", publicacion=" + publicacion
+				+ "]";
+	}
 
 }

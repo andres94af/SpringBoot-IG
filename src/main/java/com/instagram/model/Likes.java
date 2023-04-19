@@ -1,7 +1,5 @@
 package com.instagram.model;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,28 +9,24 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "COMENTARIOS")
-public class Comentario {
-
+@Table(name = "LIKES")
+public class Likes {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@OneToOne
 	private Usuario usuario;
-	private LocalDate fechaComentario;
-	private String mensaje;
 	@ManyToOne
 	private Publicacion publicacion;
 
-	public Comentario() {
+	public Likes() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Comentario(Usuario usuario, LocalDate fechaComentario, String mensaje, Publicacion publicacion) {
+	public Likes(Usuario usuario, Publicacion publicacion) {
 		super();
 		this.usuario = usuario;
-		this.fechaComentario = fechaComentario;
-		this.mensaje = mensaje;
 		this.publicacion = publicacion;
 	}
 
@@ -52,22 +46,6 @@ public class Comentario {
 		this.usuario = usuario;
 	}
 
-	public LocalDate getFechaComentario() {
-		return fechaComentario;
-	}
-
-	public void setFechaComentario(LocalDate fechaComentario) {
-		this.fechaComentario = fechaComentario;
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-
 	public Publicacion getPublicacion() {
 		return publicacion;
 	}
@@ -75,11 +53,5 @@ public class Comentario {
 	public void setPublicacion(Publicacion publicacion) {
 		this.publicacion = publicacion;
 	}
-
-	@Override
-	public String toString() {
-		return "Comentario [id=" + id + ", usuario=" + usuario.getNombre() + ", fechaComentario=" + fechaComentario
-				+ ", mensaje=" + mensaje + ", publicacion=" + publicacion + "]";
-	}
-
+	
 }
