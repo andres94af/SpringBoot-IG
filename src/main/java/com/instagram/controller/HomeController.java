@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("")
@@ -17,8 +16,9 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String inicio(Model model) {
-		model.addAttribute("titulo", "Hola desde Spring Boot IG");
-		return "usuario/HTML_BASE";
+		model.addAttribute("titulo", "Inicio");
+		log.info("Bienvenido!");
+		return "usuario/inicio";
 	}
 	
 	@GetMapping("/login")

@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-
 @Component
 class UserDetailsServiceImpl implements UserDetailsService {
 	
@@ -16,7 +15,7 @@ class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    	return User.builder().username("usuario@mail.com").password(encoder.encode("AnDrEs123")).roles("USER").build();
+    	return User.builder().username("usuario@mail.com").password(encoder.encode("321a")).roles("USER").build();
     }
 
 }
