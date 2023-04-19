@@ -21,20 +21,21 @@
 					th:src="@{/images/login-insta.png}">
 			</div>
 			<div class="col-3">
-				<div class="card p-4 mb-3">
-					<div class="card-body">
-						<form>
+				<div class="card mb-3">
+					<div class="card-body p-4">
+						<form th:action="@{/login}" method="post">
 							<div class="mb-5">
 								<img th:src="@{/images/instagram-n.png}" class="img-fluid">
 							</div>
-							<div class="mb-2">
+							<div class="mb-3">
 								<input type="email" class="form-control" id="username"
-									name="username" placeholder="Correo electrónico">
+									name="username" placeholder="Correo electrónico" required>
 							</div>
 							<div class="mb-3">
 								<input type="password" class="form-control" id="password"
-									name="password" placeholder="Contraseña">
+									name="password" placeholder="Contraseña" required>
 							</div>
+							<p th:if="${param.error}" class="text-danger text-left"><small>Email o contraseña incorrectos</small></p>
 							<div class="d-grid gap-2 mb-3">
 								<button type="submit" class="btn btn-info" style="color: white;">
 									<strong>Iniciar sesión</strong>
@@ -42,7 +43,7 @@
 							</div>
 						</form>
 						<hr>
-						<div>
+						<div class="mt-3">
 							<a href="#"
 								class="link-dark link-offset-2 link-underline link-underline-opacity-0"><i
 								class="bi bi-facebook"></i> Iniciar sesión con Facebook</a>
@@ -52,9 +53,12 @@
 				<div class="card p-4">
 					<p class="m-0">
 						¿No tienes una cuenta? <strong><a
-							class="link-offset-2 link-underline link-underline-opacity-0"
+							class="link-info link-offset-2 link-underline link-underline-opacity-0"
 							href="#">Regístrate</a></strong>
 					</p>
+				</div>
+				<div>
+					<p class="my-2">Descarga la app.</p>
 				</div>
 			</div>
 		</div>
