@@ -14,5 +14,10 @@ public class HomeController {
 		model.addAttribute("titulo", "Hola desde Spring Boot IG");
 		return "usuario/HTML_BASE";
 	}
+	
+	@GetMapping("/login1")
+	public String inicio() {
+		return "login";
+	}
 
 }
