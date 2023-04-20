@@ -12,11 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.instagram.model.Autorizacion;
 import com.instagram.model.Usuario;
-import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IImagenService;
 import com.instagram.service.IUsuarioService;
 
@@ -40,13 +36,16 @@ public class HomeController {
 	public String inicio(Model model, HttpSession session) {
 		Optional<Usuario> usuarioOpt = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		log.info("Usuario logueado: {}",usuarioOpt.get());
-		model.addAttribute("titulo", "Inicio del usuario: " + usuarioOpt.get().getUsername());
+		model.addAttribute("titulo", usuarioOpt.get().getUsername());
 		return "usuario/inicio";
 	}
 	
 	@GetMapping("/login")
-	public String vistaLogin(Model model) {
-		model.addAttribute("titulo", "Login");
+	public String vistaLogin(Model model, HttpSession session) {
+		if (session.getAttribute("idUsuario")!=null) {
+			model.addAttribute("titulo", "Login");
+			return "redirect:/";
+		}
 		return "login";
 	}
 	
@@ -56,7 +55,7 @@ public class HomeController {
 		return "registro";
 	}
 	
-	@PostMapping("/iniciarSesion")
+	@GetMapping("/iniciarSesion")
 	public String iniciarSesion() {
 		return "redirect:/";
 	}
