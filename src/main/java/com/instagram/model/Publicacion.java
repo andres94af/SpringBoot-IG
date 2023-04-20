@@ -25,6 +25,7 @@ public class Publicacion {
 	private TipoDePublicacion tipo;
 	@OneToMany(mappedBy = "publicacion")
 	private List<Imagen> imagenes;
+	private String titulo;
 	private String ubicacion;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fechaCreacion;
@@ -36,13 +37,14 @@ public class Publicacion {
 	public Publicacion() {
 	}
 
-	public Publicacion(Integer id, Usuario usuario, TipoDePublicacion tipo, List<Imagen> imagenes, String ubicacion,
+	public Publicacion(Integer id, Usuario usuario, TipoDePublicacion tipo, List<Imagen> imagenes, String titulo, String ubicacion,
 			LocalDate fechaCreacion, List<Comentario> comentarios, List<Like> likes) {
 		this.id = id;
 		this.usuario = usuario;
 		this.tipo = tipo;
 		this.imagenes = imagenes;
 		this.ubicacion = ubicacion;
+		this.titulo = titulo;
 		this.fechaCreacion = fechaCreacion;
 		this.comentarios = comentarios;
 		this.likes = likes;
@@ -111,10 +113,18 @@ public class Publicacion {
 	public void setLikes(List<Like> likes) {
 		this.likes = likes;
 	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 
 	@Override
 	public String toString() {
-		return "Publicacion [id=" + id + ", usuario=" + usuario.getUsername() + ", tipo=" + tipo + ", imagenes="
+		return "Publicacion [id=" + id + "titulo=" + titulo + ", usuario=" + usuario.getUsername() + ", tipo=" + tipo + ", imagenes="
 				+ imagenes.size() + ", ubicacion=" + ubicacion + ", fechaCreacion=" + fechaCreacion + ", comentarios="
 				+ comentarios.size() + ", likes=" + likes.size() + "]";
 	}

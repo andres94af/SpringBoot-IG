@@ -35,8 +35,10 @@ public class HomeController {
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
 		Optional<Usuario> usuarioOpt = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		log.info("Usuario logueado: {}",usuarioOpt.get());
+		Usuario usuario = usuarioOpt.get();
 		model.addAttribute("titulo", usuarioOpt.get().getUsername());
+		model.addAttribute("imgUrl", imagenService.findByUsuario(usuario).get().getUrl());
+		model.addAttribute("usuario", usuario);
 		return "usuario/inicio";
 	}
 	

@@ -4,16 +4,42 @@
 <head th:replace="~{layout/layout.html :: head}"></head>
 <body>
 	<!-- Header -->
-	<header th:replace="~{layout/layout.html :: header}"></header>
+	<div th:replace="~{layout/layout.html :: nav}"></div>
 	<!-- Fin Header -->
 
-	<!-- Cuerpo de la página -->
-	<h1>Hola desde inicio html</h1>
-	<!-- FIN Cuerpo de la página -->
+	<!-- Contenido de la Pagina -->
+	<div class="container-fluid text center mt-5">
+		<div class="row justify-content-evenly">
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-body">
+						<h6 class="card-title" th:text="${usuario.username}">Quien publica</h6>
+						<p class="card-text text-secondary">Ubicacion</p>
+					</div>
+					<img th:src="${usuario.imgPerfil.url}" class="card-img-top">
+					<div class="card-body">
+						<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-suit-heart"></i></a>
+						<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots"></i></a>
+						<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
+					</div>
+					<div class="card-body">
+						<h6 class="card-title">Le gusta a</h6>
+						<p class="card-text">Comentarios</p>
+						<form action="">
+							<div class="input-group mb-1">
+							  <input type="text" class="form-control" placeholder="Agregar un comentario...">
+							  <button class="btn btn-outline-secondary" type="submit" ><i class="bi bi-send-check"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- FIN Contenido de la Pagina -->
 
 	<!-- Footer -->
 	<footer th:replace="~{layout/layout.html :: footer}"></footer>
 	<!-- FIN Footer -->
-
 </body>
 </html>

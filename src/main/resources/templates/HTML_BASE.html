@@ -4,18 +4,28 @@
 <head th:replace="~{layout/layout.html :: head}"></head>
 <body>
 	<!-- Header -->
-	<header th:replace="~{layout/layout.html :: header}"></header>
+	<div th:replace="~{layout/layout.html :: nav}"></div>
 	<!-- Fin Header -->
-	
-	<!-- Cuerpo de la página -->
-	<div class="container-fluid">
-		<h1 th:text="${titulo}"></h1>
+
+	<!-- Contenido de la Pagina -->
+	<div class="container-fluid text center mt-5">
+		<div class="row justify-content-evenly">
+			<div class="col-md-4">
+				<h3>Left Sidebar with Submenus</h3>
+				<p class="lead">An example 2-level sidebar with collasible menu
+					items. The menu functions like an "accordion" where only a single
+					menu is be open at a time. While the sidebar itself is not
+					toggle-able, it does responsively shrink in width on smaller
+					screens.</p>
+			</div>
+		</div>
 	</div>
-	<!-- FIN Cuerpo de la página -->
-	
+	<!-- FIN Contenido de la Pagina -->
+
 	<!-- Footer -->
 	<footer th:replace="~{layout/layout.html :: footer}"></footer>
 	<!-- FIN Footer -->
-
 </body>
+</html>
+>
 </html>
