@@ -23,6 +23,7 @@
 							<div class="mt-4 mb-3">
 								<input type="email" class="form-control" id="email" name="email"
 									placeholder="Correo electrónico" required>
+									<p th:if="${param.existe_m}" class="text-danger"><small>Existe una cuenta con el email ingresado</small></p>
 							</div>
 							<div class="mb-3">
 								<input type="text" class="form-control" id="nombre"
@@ -40,6 +41,7 @@
 							<div class="mb-3">
 								<input type="text" class="form-control" id="username"
 									name="username" placeholder="Nombre de usuario" required>
+									<p th:if="${param.existe_u}" class="text-danger"><small>Existe una cuenta con el mismo nombre de usuario</small></p>
 							</div>
 							<div class="mb-3">
 								<input type="password" class="form-control" id="password"

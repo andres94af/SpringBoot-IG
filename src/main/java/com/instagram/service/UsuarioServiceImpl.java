@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.instagram.model.Autorizacion;
 import com.instagram.model.Usuario;
 import com.instagram.repository.IUsuarioRepository;
 
@@ -14,6 +15,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	
 	@Autowired
 	IUsuarioRepository usuarioRepo;
+	
+	@Autowired
+	IAutorizacionService autorizacionService;
 
 	@Override
 	public List<Usuario> findAll() {
@@ -27,6 +31,10 @@ public class UsuarioServiceImpl implements IUsuarioService{
 
 	@Override
 	public Usuario save(Usuario usuario) {
+		usuarioRepo.save(usuario);
+		Autorizacion autorizacion = new Autorizacion(usuario, true, "USER");
+		autorizacionService.save(autorizacion);
+		usuario.setAutorizacion(autorizacion);
 		return usuarioRepo.save(usuario);
 	}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.instagram.model.Autorizacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IImagenService;
@@ -31,9 +32,6 @@ public class HomeController {
 	
 	@Autowired
 	IUsuarioService usuarioService;
-	
-	@Autowired
-	IAutorizacionService autorizacionService;
 	
 	@Autowired
 	IImagenService imagenService;
@@ -65,8 +63,17 @@ public class HomeController {
 	
 	@GetMapping("/generarCuenta")
 	public String guardarNuevaCuenta(Usuario usuario) {
-		log.info("usuario registrado: {}", usuario);
+		Optional<Usuario> usuarioEmail = usuarioService.findByEmail(usuario.getEmail());
+		Optional<Usuario> usuarioUsername = usuarioService.findByUsername(usuario.getUsername());
+		if (usuarioEmail.isPresent()) {
+			return "redirect:/registro?existe_m";
+		}else if (usuarioUsername.isPresent()) {
+			return "redirect:/registro?existe_u";
+		}else {
+		usuario.setPassword(passEncoder.encode(usuario.getPassword()));
+		usuarioService.save(usuario);
 		return "redirect:/login";
+		}
 	}
 
 }

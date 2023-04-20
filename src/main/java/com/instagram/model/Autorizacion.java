@@ -22,8 +22,7 @@ public class Autorizacion {
 	public Autorizacion() {
 	}
 
-	public Autorizacion(Integer id, Usuario usuario, boolean activo, String rol) {
-		this.id = id;
+	public Autorizacion(Usuario usuario, boolean activo, String rol) {
 		this.usuario = usuario;
 		this.activo = activo;
 		this.rol = rol;
