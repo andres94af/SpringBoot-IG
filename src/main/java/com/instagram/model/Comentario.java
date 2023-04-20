@@ -25,11 +25,9 @@ public class Comentario {
 	private Publicacion publicacion;
 
 	public Comentario() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Comentario(Usuario usuario, LocalDate fechaComentario, String mensaje, Publicacion publicacion) {
-		super();
 		this.usuario = usuario;
 		this.fechaComentario = fechaComentario;
 		this.mensaje = mensaje;
@@ -78,8 +76,8 @@ public class Comentario {
 
 	@Override
 	public String toString() {
-		return "Comentario [id=" + id + ", usuario=" + usuario.getNombre() + ", fechaComentario=" + fechaComentario
-				+ ", mensaje=" + mensaje + ", publicacion=" + publicacion + "]";
+		return "Comentario [publicacion=" + publicacion.getId() + ", fechaComentario=" + fechaComentario + ", usuario="
+				+ usuario.getUsername() + ", mensaje=" + mensaje + "]";
 	}
 
 }

@@ -37,15 +37,18 @@ public class Usuario {
 	private Autorizacion autorizacion;
 	@OneToMany(mappedBy = "usuario")
 	private List<Publicacion> publicaciones;
+	@OneToMany(mappedBy = "usuario")
+	private List<Seguidor> seguidores;
+	@OneToMany(mappedBy = "usuario")
+	private List<Seguido> seguidos;
 
 	public Usuario() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Usuario(String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
+	public Usuario(Integer id, String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
 			String username, String password, Imagen imgPerfil, Autorizacion autorizacion,
-			List<Publicacion> publicaciones) {
-		super();
+			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos) {
+		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
@@ -56,6 +59,8 @@ public class Usuario {
 		this.imgPerfil = imgPerfil;
 		this.autorizacion = autorizacion;
 		this.publicaciones = publicaciones;
+		this.seguidores = seguidores;
+		this.seguidos = seguidos;
 	}
 
 	public Integer getId() {
@@ -146,10 +151,26 @@ public class Usuario {
 		this.publicaciones = publicaciones;
 	}
 
+	public List<Seguidor> getSeguidores() {
+		return seguidores;
+	}
+
+	public void setSeguidores(List<Seguidor> seguidores) {
+		this.seguidores = seguidores;
+	}
+
+	public List<Seguido> getSeguidos() {
+		return seguidos;
+	}
+
+	public void setSeguidos(List<Seguido> seguidos) {
+		this.seguidos = seguidos;
+	}
+
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNacimiento="
-				+ fechaNacimiento + ", email=" + email + ", username=" + username + ", imgPerfil=" + imgPerfil + "]";
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", email=" + email
+				+ ", username=" + username + "]";
 	}
 
 }

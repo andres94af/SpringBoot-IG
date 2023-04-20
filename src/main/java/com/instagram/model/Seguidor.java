@@ -5,29 +5,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "LIKES")
-public class Likes {
-	
+@Table(name = "SEGUIDORES")
+public class Seguidor {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@OneToOne
-	private Usuario usuario;
 	@ManyToOne
-	private Publicacion publicacion;
+	private Usuario usuario;
 
-	public Likes() {
-		// TODO Auto-generated constructor stub
+	public Seguidor() {
 	}
 
-	public Likes(Usuario usuario, Publicacion publicacion) {
-		super();
+	public Seguidor(Integer id, Usuario usuario) {
+		this.id = id;
 		this.usuario = usuario;
-		this.publicacion = publicacion;
 	}
 
 	public Integer getId() {
@@ -46,12 +41,9 @@ public class Likes {
 		this.usuario = usuario;
 	}
 
-	public Publicacion getPublicacion() {
-		return publicacion;
+	@Override
+	public String toString() {
+		return "Seguidor [id=" + id + ", usuario=" + usuario.getUsername() + "]";
 	}
 
-	public void setPublicacion(Publicacion publicacion) {
-		this.publicacion = publicacion;
-	}
-	
 }

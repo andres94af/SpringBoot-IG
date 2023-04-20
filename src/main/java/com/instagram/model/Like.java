@@ -9,25 +9,23 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "IMAGENES")
-public class Imagen {
+@Table(name = "LIKES")
+public class Like {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@OneToOne
 	private Usuario usuario;
-	private String url;
 	@ManyToOne
 	private Publicacion publicacion;
 
-	public Imagen() {
+	public Like() {
 	}
 
-	public Imagen(Integer id, Usuario usuario, String url, Publicacion publicacion) {
+	public Like(Integer id, Usuario usuario, Publicacion publicacion) {
 		this.id = id;
 		this.usuario = usuario;
-		this.url = url;
 		this.publicacion = publicacion;
 	}
 
@@ -47,14 +45,6 @@ public class Imagen {
 		this.usuario = usuario;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public Publicacion getPublicacion() {
 		return publicacion;
 	}
@@ -65,8 +55,7 @@ public class Imagen {
 
 	@Override
 	public String toString() {
-		return "Imagen [usuario=" + usuario.getUsername() + ", url=" + url + ", publicacion=" + publicacion.getId()
-				+ "]";
+		return "Likes [usuario=" + usuario.getUsername() + ", publicacion=" + publicacion.getId() + "]";
 	}
 
 }

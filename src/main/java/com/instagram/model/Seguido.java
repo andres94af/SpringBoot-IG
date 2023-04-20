@@ -4,29 +4,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "AUTORIZACIONES")
-public class Autorizacion {
+@Table(name = "SEGUIDOS")
+public class Seguido {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@OneToOne
+	@ManyToOne
 	private Usuario usuario;
-	private boolean activo;
-	private String rol;
 
-	public Autorizacion() {
+	public Seguido() {
 	}
 
-	public Autorizacion(Integer id, Usuario usuario, boolean activo, String rol) {
+	public Seguido(Integer id, Usuario usuario) {
 		this.id = id;
 		this.usuario = usuario;
-		this.activo = activo;
-		this.rol = rol;
 	}
 
 	public Integer getId() {
@@ -45,26 +41,8 @@ public class Autorizacion {
 		this.usuario = usuario;
 	}
 
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
-
-	public String getRol() {
-		return rol;
-	}
-
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
-
 	@Override
 	public String toString() {
-		return "Autorizacion [id=" + id + ", usuario=" + usuario.getUsername() + ", activo=" + activo + ", rol=" + rol
-				+ "]";
+		return "Seguidor [id=" + id + ", usuario=" + usuario.getUsername() + "]";
 	}
-
 }

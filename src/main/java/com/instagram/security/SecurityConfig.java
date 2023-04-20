@@ -35,12 +35,13 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> {
+					auth.requestMatchers("/login", "/registro", "/generarCuenta").permitAll();
 					auth.requestMatchers("/**").hasRole("USER");
 					auth.requestMatchers("/administrador").hasRole("ADMIN");
 					})
 				.userDetailsService(userDetailsService)
 				.formLogin(login -> login.loginPage("/login").permitAll().defaultSuccessUrl("/iniciarSesion"))
-				.logout(logout -> logout.logoutSuccessUrl("/?logout"));
+				.logout(logout -> logout.permitAll());
 		return http.build();
 	}
 

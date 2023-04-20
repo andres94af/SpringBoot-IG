@@ -31,15 +31,14 @@ public class Publicacion {
 	@OneToMany(mappedBy = "publicacion")
 	private List<Comentario> comentarios;
 	@OneToMany(mappedBy = "publicacion")
-	private List<Likes> likes;
+	private List<Like> likes;
 
 	public Publicacion() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Publicacion(Usuario usuario, TipoDePublicacion tipo, List<Imagen> imagenes, String ubicacion,
-			LocalDate fechaCreacion, List<Comentario> comentarios, List<Likes> likes) {
-		super();
+	public Publicacion(Integer id, Usuario usuario, TipoDePublicacion tipo, List<Imagen> imagenes, String ubicacion,
+			LocalDate fechaCreacion, List<Comentario> comentarios, List<Like> likes) {
+		this.id = id;
 		this.usuario = usuario;
 		this.tipo = tipo;
 		this.imagenes = imagenes;
@@ -105,19 +104,19 @@ public class Publicacion {
 		this.comentarios = comentarios;
 	}
 
-	public List<Likes> getLikes() {
+	public List<Like> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(List<Likes> likes) {
+	public void setLikes(List<Like> likes) {
 		this.likes = likes;
 	}
 
 	@Override
 	public String toString() {
-		return "Publicacion [usuario=" + usuario + ", tipo=" + tipo + ", imagenes=" + imagenes + ", ubicacion="
-				+ ubicacion + ", fechaCreacion=" + fechaCreacion + ", comentarios=" + comentarios + ", likes="
-				+ likes.size() + "]";
+		return "Publicacion [id=" + id + ", usuario=" + usuario.getUsername() + ", tipo=" + tipo + ", imagenes="
+				+ imagenes.size() + ", ubicacion=" + ubicacion + ", fechaCreacion=" + fechaCreacion + ", comentarios="
+				+ comentarios.size() + ", likes=" + likes.size() + "]";
 	}
 
 }
