@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.instagram.model.Autorizacion;
+import com.instagram.model.Imagen;
 import com.instagram.model.Usuario;
 import com.instagram.repository.IUsuarioRepository;
 
@@ -18,6 +19,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	
 	@Autowired
 	IAutorizacionService autorizacionService;
+	
+	@Autowired
+	IImagenService imagenService;
 
 	@Override
 	public List<Usuario> findAll() {
@@ -33,8 +37,11 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	public Usuario save(Usuario usuario) {
 		usuarioRepo.save(usuario);
 		Autorizacion autorizacion = new Autorizacion(usuario, true, "USER");
+		Imagen imagenDefault = new Imagen(usuario, "https://png.pngtree.com/png-vector/20191026/ourlarge/pngtree-avatar-vector-icon-white-background-png-image_1870181.jpg", null);
 		autorizacionService.save(autorizacion);
+		imagenService.save(imagenDefault);
 		usuario.setAutorizacion(autorizacion);
+		usuario.setImgPerfil(imagenDefault);
 		return usuarioRepo.save(usuario);
 	}
 

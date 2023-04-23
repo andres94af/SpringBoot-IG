@@ -24,8 +24,7 @@ public class Imagen {
 	public Imagen() {
 	}
 
-	public Imagen(Integer id, Usuario usuario, String url, Publicacion publicacion) {
-		this.id = id;
+	public Imagen(Usuario usuario, String url, Publicacion publicacion) {
 		this.usuario = usuario;
 		this.url = url;
 		this.publicacion = publicacion;

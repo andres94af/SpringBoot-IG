@@ -12,13 +12,13 @@
 		<div class="row justify-content-evenly">
 			<div class="col-md-4">
 				<div class="row mb-2">
-					<div class="col-2" th:each="user : ${usuarios}">
-						<img th:src="${user.imgPerfil.url}" style="width: 4rem; border-radius: 50%; border: solid 2px #0095F6; max-height: 4rem;">
-						<p class=" text-truncate"><small th:text="${user.username}"></small></p>
+					<div class="col text-center" style="max-width: 5rem;" th:each="user : ${usuarios}">
+						<img th:src="${user.imgPerfil.url}" style="width: 4rem; height: 4rem; border-radius: 50%; border: solid 2px #0095F6; max-height: 4rem;">
+						<p class="text-truncate"><small th:text="${user.username}"></small></p>
 					</div>
 				</div>
 				<div class="border-bottom mb-3" th:each="publicacion : ${publicaciones}">
-					<div class="card-body">
+					<div>
 						<div class="row">
 							<div class="col-auto pr-0">
 								<img th:src="${publicacion.usuario.imgPerfil.url}" style="width: 3rem; border-radius: 50%;">
