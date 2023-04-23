@@ -1,5 +1,6 @@
 package com.instagram.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -10,10 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.instagram.model.Publicacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
+import com.instagram.service.IPublicacionService;
 import com.instagram.service.IUsuarioService;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,13 +35,19 @@ public class HomeController {
 	@Autowired
 	IImagenService imagenService;
 	
+	@Autowired
+	IPublicacionService publicacionService;
+	
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
-		Optional<Usuario> usuarioOpt = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		Usuario usuario = usuarioOpt.get();
-		model.addAttribute("titulo", usuarioOpt.get().getUsername());
-		model.addAttribute("imgUrl", imagenService.findByUsuario(usuario).get().getUrl());
+		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		List<Usuario> usuarios = usuarioService.findAll();
+		List<Publicacion> publicaciones = publicacionService.findAll();
+		model.addAttribute("titulo", usuario.getUsername());
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("usuarios", usuarios);
+		model.addAttribute("publicaciones", publicaciones);
+		log.info("Listado de publicaciones: {}", publicaciones);
 		return "usuario/inicio";
 	}
 	
