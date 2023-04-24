@@ -34,19 +34,12 @@
 					</div>
 					<div>
 						<form th:action="@{/cuenta/agregarQuitarLike/}+${publicacion.id}">
-							<div th:if="${publicacion.likes.size()}==0">
-								<button type="submit" class="btn-like"><i class="fs-4 bi bi-suit-heart me-1"></i></button>
-								<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
-								<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
-							</div>
-							<div th:unless="${publicacion.likes.size()}==0">
-							<button th:each="like : ${publicacion.likes}" type="submit" class="btn-like">
-								<i th:if="${like.usuario.id}==${usuario.id}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
-								<i th:if="${like.usuario.id}!=${usuario.id}" class="fs-4 bi bi-suit-heart"></i>
+							<button type="submit" class="btn-like">
+								<i th:if="${dioLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
+								<i th:unless="${dioLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
 							</button>
 							<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
 							<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
-							</div>
 						</form>
 					</div>
 					<div>

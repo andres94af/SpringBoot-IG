@@ -1,5 +1,6 @@
 package com.instagram.controller;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.instagram.model.Like;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
@@ -50,6 +52,15 @@ public class HomeController {
 		model.addAttribute("usuarios", usuarios);//seguidos(VER)
 		List<Publicacion> publicaciones = publicacionService.findAll();
 		model.addAttribute("publicaciones", publicaciones);//public de gente que sigo(VER)
+		boolean dioLike=false;
+		for (Publicacion p : publicaciones) {
+			for (Like pl : p.getLikes()) {
+				if (pl.getUsuario().getId().equals(usuario.getId())) {
+					dioLike=true;
+				}
+			}
+		}
+		model.addAttribute("dioLike", dioLike);
 		return "usuario/inicio";
 	}
 	
