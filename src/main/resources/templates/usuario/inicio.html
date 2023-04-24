@@ -12,8 +12,8 @@
 		<div class="row justify-content-evenly">
 			<div class="col-md-4">
 				<div class="row mb-2">
-					<div class="col text-center" style="max-width: 5rem;" th:each="user : ${usuarios}">
-						<img th:src="${user.imgPerfil.url}" style="width: 4rem; height: 4rem; border-radius: 50%; border: solid 2px #0095F6; max-height: 4rem;">
+					<div class="col text-center" th:each="user : ${usuarios}" style="max-width: 5rem;">
+						<img th:src="${user.imgPerfil.url}" class="img-historia">
 						<p class="text-truncate"><small th:text="${user.username}"></small></p>
 					</div>
 				</div>
@@ -21,7 +21,7 @@
 					<div>
 						<div class="row">
 							<div class="col-auto pr-0">
-								<img th:src="${publicacion.usuario.imgPerfil.url}" style="width: 3rem; border-radius: 50%;">
+								<img th:src="${publicacion.usuario.imgPerfil.url}" class="img-perfil-publi">
 							</div>
 							<div class="col">
 								<h6 class="card-title" th:text="${publicacion.usuario.username}"></h6>
@@ -33,9 +33,21 @@
 						<img th:src="${imagen.url}" class="card-img-top">
 					</div>
 					<div>
-						<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-suit-heart"></i></a>
-						<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots"></i></a>
-						<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
+						<form th:action="@{/cuenta/agregarQuitarLike/}+${publicacion.id}">
+							<div th:if="${publicacion.likes.size()}==0">
+								<button type="submit" class="btn-like"><i class="fs-4 bi bi-suit-heart me-1"></i></button>
+								<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
+								<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
+							</div>
+							<div th:unless="${publicacion.likes.size()}==0">
+							<button th:each="like : ${publicacion.likes}" type="submit" class="btn-like">
+								<i th:if="${like.usuario.id}==${usuario.id}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
+								<i th:if="${like.usuario.id}!=${usuario.id}" class="fs-4 bi bi-suit-heart"></i>
+							</button>
+							<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
+							<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
+							</div>
+						</form>
 					</div>
 					<div>
 						<p class="card-title"><strong>Le gusta a </strong><span th:each="like : ${publicacion.likes}"><span th:text="${like.usuario.username}+', '"></span></span></p>
@@ -50,7 +62,7 @@
 					</div>
 					<div class="mb-4">
 						<form th:action="@{/cuenta/agregarComentario/}+${publicacion.id}" method="post">
-							  <input name="comentario" th:id="'comentario'+${publicacion.id}" type="text" placeholder="Agregar un comentario..." style="border: none;">
+							  <input name="comentario" th:id="'comentario'+${publicacion.id}" type="text" placeholder="Agregar un comentario..." class="input-comentario">
 						</form>
 					</div>
 				</div>

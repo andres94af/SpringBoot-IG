@@ -1,0 +1,25 @@
+.img-historia {
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
+	border: solid 2.5px #0095F6;
+}
+
+.img-perfil-publi {
+	width: 3rem;
+	border-radius: 50%;
+}
+
+.input-comentario {
+	border: none;
+	width: 90%;
+}
+
+.input-comentario:focus {
+	outline: none;
+}
+
+.btn-like {
+	background: transparent;
+	border: none;
+}

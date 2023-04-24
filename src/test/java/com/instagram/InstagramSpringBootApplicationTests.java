@@ -29,26 +29,8 @@ class InstagramSpringBootApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Usuario usuario = usuarioService.findById(1).get();
-//		PasswordEncoder passEncoder = new BCryptPasswordEncoder();
-//		Usuario usuario = new Usuario();
-//		usuario.setNombre("Andres");
-//		usuario.setApellido("Fernandez");
-//		usuario.setEmail("andres94@gmail.com");
-//		usuario.setFechaNacimiento(LocalDate.now());
-//		usuario.setGenero("Masculino");
-//		usuario.setPassword(passEncoder.encode("12345"));
-//		usuario.setUsername("anndyfernandez");
-//		usuarioService.save(usuario);
-//		Autorizacion aut = new Autorizacion(1, usuario, true, "USER");
-//		autorizacionService.save(aut);
-//		usuario.setAutorizacion(aut);
-//		usuarioService.save(usuario);
-		Imagen imagen = new Imagen();
-		imagen.setUsuario(usuario);
-		imagen.setUrl("https://www.infojobs.net/ficha.foto?quina=e2ce1f62-2ba9-4596-b7e2-3e52757d9cab");
-		imagenService.save(imagen);
-		
+		PasswordEncoder passEncoder = new BCryptPasswordEncoder();
+		System.out.println(passEncoder.encode("123456"));
 	}
 
 }

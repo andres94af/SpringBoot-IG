@@ -23,8 +23,7 @@ public class Like {
 	public Like() {
 	}
 
-	public Like(Integer id, Usuario usuario, Publicacion publicacion) {
-		this.id = id;
+	public Like(Usuario usuario, Publicacion publicacion) {
 		this.usuario = usuario;
 		this.publicacion = publicacion;
 	}

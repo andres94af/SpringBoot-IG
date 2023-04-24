@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -38,39 +39,44 @@ public class HomeController {
 	@Autowired
 	IPublicacionService publicacionService;
 	
+	//REDIRECCION AL INICIO SI SE ENCUENTRA LOGUEADO
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		model.addAttribute("titulo", usuario.getUsername());//username nombre de ventana
+		model.addAttribute("usuario", usuario);//usuario logueado
 		List<Usuario> usuarios = usuarioService.findAll();
+		usuarios.removeIf(u -> u.equals(usuario));
+		model.addAttribute("usuarios", usuarios);//seguidos(VER)
 		List<Publicacion> publicaciones = publicacionService.findAll();
-		model.addAttribute("titulo", usuario.getUsername());
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("usuarios", usuarios);
-		model.addAttribute("publicaciones", publicaciones);
-		log.info("Listado de publicaciones: {}", publicaciones);
+		model.addAttribute("publicaciones", publicaciones);//public de gente que sigo(VER)
 		return "usuario/inicio";
 	}
 	
+	//REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
 	@GetMapping("/login")
-	public String vistaLogin(Model model, HttpSession session) {
-		if (session.getAttribute("idUsuario")!=null) {
-			model.addAttribute("titulo", "Login");
+	public String vistaLogin(Model model, Authentication auth) {
+		model.addAttribute("titulo", "Login");
+		if (auth!=null) {
 			return "redirect:/";
 		}
 		return "login";
 	}
 	
+	//REDIRECCION A VISTA REGISTRO
 	@GetMapping("/registro")
 	public String vistaRegistro(Model model) {
 		model.addAttribute("titulo", "Registro");
 		return "registro";
 	}
 	
+	//METODO QUE INICIA SESION
 	@GetMapping("/iniciarSesion")
 	public String iniciarSesion() {
 		return "redirect:/";
 	}
 	
+	//METODO QUE REGISTRA NUEVO USUARIO EN BBDD
 	@GetMapping("/generarCuenta")
 	public String guardarNuevaCuenta(Usuario usuario) {
 		Optional<Usuario> usuarioEmail = usuarioService.findByEmail(usuario.getEmail());
