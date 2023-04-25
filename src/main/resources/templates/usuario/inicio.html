@@ -34,16 +34,19 @@
 					</div>
 					<div>
 						<form th:action="@{/cuenta/agregarQuitarLike/}+${publicacion.id}">
-							<button type="submit" class="btn-like">
-								<i th:if="${dioLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
-								<i th:unless="${dioLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
+							<button type="submit" class="btn-like" th:if="${publicacion.likes.size()}==0">
+								<i class="fs-4 bi bi-suit-heart text-dark"></i>
+							</button>
+							<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuario.id)}">
+								<i th:if="${tieneLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
+								<i th:unless="${tieneLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
 							</button>
 							<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
 							<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
 						</form>
 					</div>
-					<div>
-						<p class="card-title"><strong>Le gusta a </strong><span th:each="like : ${publicacion.likes}"><span th:text="${like.usuario.username}+', '"></span></span></p>
+					<div th:if="${publicacion.likes.size()}>0">
+						<p class="card-title text-truncate"><strong>Le gusta a </strong><span th:each="like : ${publicacion.likes}"><span th:text="${like.usuario.username}+', '"></span></span></p>
 					</div>
 					<div>
 						<p class="card-title">

@@ -27,79 +27,70 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("")
 public class HomeController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
-	
+
 	PasswordEncoder passEncoder = new BCryptPasswordEncoder();
-	
+
 	@Autowired
 	IUsuarioService usuarioService;
-	
+
 	@Autowired
 	IImagenService imagenService;
-	
+
 	@Autowired
 	IPublicacionService publicacionService;
-	
-	//REDIRECCION AL INICIO SI SE ENCUENTRA LOGUEADO
+
+	// REDIRECCION AL INICIO SI SE ENCUENTRA LOGUEADO
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		model.addAttribute("titulo", usuario.getUsername());//username nombre de ventana
-		model.addAttribute("usuario", usuario);//usuario logueado
+		model.addAttribute("title", usuario.getUsername());
+		model.addAttribute("usuario", usuario);// usuario logueado
 		List<Usuario> usuarios = usuarioService.findAll();
 		usuarios.removeIf(u -> u.equals(usuario));
-		model.addAttribute("usuarios", usuarios);//seguidos(VER)
+		model.addAttribute("usuarios", usuarios);// seguidos(VER)
 		List<Publicacion> publicaciones = publicacionService.findAll();
-		model.addAttribute("publicaciones", publicaciones);//public de gente que sigo(VER)
-		boolean dioLike=false;
-		for (Publicacion p : publicaciones) {
-			for (Like pl : p.getLikes()) {
-				if (pl.getUsuario().getId().equals(usuario.getId())) {
-					dioLike=true;
-				}
-			}
-		}
-		model.addAttribute("dioLike", dioLike);
+		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo(VER)
 		return "usuario/inicio";
 	}
-	
-	//REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
+
+	// REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
 	@GetMapping("/login")
 	public String vistaLogin(Model model, Authentication auth) {
-		model.addAttribute("titulo", "Login");
-		if (auth!=null) {
+		model.addAttribute("title", "Login");
+		if (auth != null) {
 			return "redirect:/";
 		}
 		return "login";
 	}
-	
-	//REDIRECCION A VISTA REGISTRO
+
+	// REDIRECCION A VISTA REGISTRO
 	@GetMapping("/registro")
 	public String vistaRegistro(Model model) {
-		model.addAttribute("titulo", "Registro");
+		model.addAttribute("title", "Registro");
 		return "registro";
 	}
-	
-	//METODO QUE INICIA SESION
+
+	// METODO QUE INICIA SESION
 	@GetMapping("/iniciarSesion")
 	public String iniciarSesion() {
 		return "redirect:/";
 	}
-	
-	//METODO QUE REGISTRA NUEVO USUARIO EN BBDD
+
+	// METODO QUE REGISTRA NUEVO USUARIO EN BBDD
 	@GetMapping("/generarCuenta")
 	public String guardarNuevaCuenta(Usuario usuario) {
 		Optional<Usuario> usuarioEmail = usuarioService.findByEmail(usuario.getEmail());
 		Optional<Usuario> usuarioUsername = usuarioService.findByUsername(usuario.getUsername());
 		if (usuarioEmail.isPresent()) {
 			return "redirect:/registro?existe_m";
-		}else if (usuarioUsername.isPresent()) {
+		} else if (usuarioUsername.isPresent()) {
 			return "redirect:/registro?existe_u";
-		}else {
-		usuario.setPassword(passEncoder.encode(usuario.getPassword()));
-		usuarioService.save(usuario);
-		return "redirect:/login";
+		} else {
+			usuario.setPassword(passEncoder.encode(usuario.getPassword()));
+			usuarioService.save(usuario);
+			return "redirect:/login";
 		}
 	}
 
