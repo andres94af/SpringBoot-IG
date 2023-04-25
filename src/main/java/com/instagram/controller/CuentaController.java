@@ -60,7 +60,7 @@ public class CuentaController {
 			Publicacion publicacion = publicacionService.findById(id).get();
 			Comentario nuevoComentario = new Comentario(usuario, LocalDate.now(), comentario, publicacion);
 			comentarioService.save(nuevoComentario);
-			return "redirect:/";
+			return "redirect:/#post"+id;
 		}
 	}
 
@@ -76,12 +76,12 @@ public class CuentaController {
 					&& l.getPublicacion().getId().equals(like.getPublicacion().getId())) {
 				log.info("NO GUSTA MAS");
 				likeService.delete(l.getId());
-				return "redirect:/";
+				return "redirect:/#post"+id;
 			}
 		}
 		log.info("ME GUSTA");
 		likeService.save(like);
-		return "redirect:/";
+		return "redirect:/#post"+id;
 	}
 
 }

@@ -1,8 +1,27 @@
+.logo-nav {
+	max-width: 60%;
+}
+
+.img-perfil-nav {
+	width: 2.5rem;
+	border-radius: 50%;
+}
+
+.col-historia {
+	max-width: 4.5rem;
+}
+
 .img-historia {
 	width: 3.5rem;
 	height: 3.5rem;
 	border-radius: 50%;
-	border: solid 2.5px #0095F6;
+	border: solid 2.5px #ED017E;
+}
+
+.img-sugeridos {
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 50%;
 }
 
 .img-perfil-publi {

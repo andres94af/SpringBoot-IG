@@ -26,8 +26,8 @@
 				<div
 					class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
 					<a th:href="@{/}"
-						class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-decoration-none">
-						<img th:src="@{/images/instagram-n.png}" class="img-fluid p-4">
+						class="d-flex align-items-center py-3 mb-md-0 me-md-auto text-decoration-none">
+						<img th:src="@{/images/instagram-n.png}" class="img-fluid logo-nav" id="logo-nav">
 					</a>
 					<ul
 						class="nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
@@ -82,7 +82,7 @@
 								class="ms-1 d-none d-sm-inline">Crear</span>
 						</a></li>
 						<li class="nav-item"><a href="#" class="nav-link align-middle px-0 link-dark">
-							<img th:src="${usuario.imgPerfil.url}" style="width: 3.5rem; border-radius: 50%;">
+							<img th:src="${usuario.imgPerfil.url}" class="img-perfil-nav">
 							<span class="ms-1 d-none d-sm-inline">Perfil</span>
 						</a></li>
 					</ul>
@@ -122,6 +122,11 @@
 				id="añoFooter"></span>
 			</small>
 		</p>
+	</footer>
+	<!-- FIN Fragmento Footer -->
+	
+	<!-- Fragmento Scripts -->
+	<div th:fragment="scripts">
 		<script
 			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
 			integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE"
@@ -134,7 +139,7 @@
 			var date = new Date();
 			document.getElementById("añoFooter").innerHTML = date.getFullYear();
 		</script>
-	</footer>
-	<!-- FIN Fragmento Footer -->
+	</div>
+	<!-- FIN Fragmento Scripts -->
 </body>
 </html>
