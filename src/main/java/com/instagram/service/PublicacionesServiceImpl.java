@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.instagram.model.Publicacion;
+import com.instagram.model.Usuario;
 import com.instagram.repository.IPublicacionRepository;
 
 @Service
@@ -33,6 +34,11 @@ public class PublicacionesServiceImpl implements IPublicacionService{
 	@Override
 	public void delete(Publicacion publicacion) {
 		publicacionesRepo.delete(publicacion);
+	}
+
+	@Override
+	public List<Publicacion> findByUsuario(Usuario usuario) {
+		return publicacionesRepo.findByUsuario(usuario);
 	}
 
 }

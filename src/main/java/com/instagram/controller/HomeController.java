@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.instagram.model.Like;
@@ -45,7 +46,6 @@ public class HomeController {
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		model.addAttribute("title", usuario.getUsername());
 		model.addAttribute("usuario", usuario);// usuario logueado
 		List<Usuario> usuarios = usuarioService.findAll();
 		usuarios.removeIf(u -> u.equals(usuario));
@@ -58,7 +58,7 @@ public class HomeController {
 	// REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
 	@GetMapping("/login")
 	public String vistaLogin(Model model, Authentication auth) {
-		model.addAttribute("title", "Login");
+		model.addAttribute("title", " - Login");
 		if (auth != null) {
 			return "redirect:/";
 		}
@@ -68,7 +68,7 @@ public class HomeController {
 	// REDIRECCION A VISTA REGISTRO
 	@GetMapping("/registro")
 	public String vistaRegistro(Model model) {
-		model.addAttribute("title", "Registro");
+		model.addAttribute("title", " - Registro");
 		return "registro";
 	}
 
@@ -92,6 +92,18 @@ public class HomeController {
 			usuarioService.save(usuario);
 			return "redirect:/login";
 		}
+	}
+	
+	//METODO QUE LLEVA A LA VISTA DE PERFIL DEL USUARIO SELECCIONADO
+	@GetMapping("/{username}/")
+	public String perfil(Model model, HttpSession session, @PathVariable String username) {
+		model.addAttribute("title", " @"+username);
+		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		model.addAttribute("usuario", usuario);// usuario logueado
+		Usuario usuarioPerfil = usuarioService.findByUsername(username).get();
+		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
+		model.addAttribute("publicaciones", publicacionesDelPerfil);
+		return "usuario/perfil";
 	}
 
 }
