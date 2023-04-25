@@ -42,3 +42,8 @@
 	background: transparent;
 	border: none;
 }
+
+.img-usuario-perfil {
+	width: 10rem;
+	border-radius: 50%;
+}

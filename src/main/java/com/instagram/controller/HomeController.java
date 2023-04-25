@@ -93,14 +93,15 @@ public class HomeController {
 			return "redirect:/login";
 		}
 	}
-	
-	//METODO QUE LLEVA A LA VISTA DE PERFIL DEL USUARIO SELECCIONADO
+
+	// METODO QUE LLEVA A LA VISTA DE PERFIL DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/")
 	public String perfil(Model model, HttpSession session, @PathVariable String username) {
-		model.addAttribute("title", " @"+username);
+		model.addAttribute("title", " @" + username);
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		model.addAttribute("usuario", usuario);// usuario logueado
 		Usuario usuarioPerfil = usuarioService.findByUsername(username).get();
+		model.addAttribute("usuarioPerfil", usuarioPerfil);
 		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
 		model.addAttribute("publicaciones", publicacionesDelPerfil);
 		return "usuario/perfil";
