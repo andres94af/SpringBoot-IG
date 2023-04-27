@@ -1,5 +1,8 @@
 package com.instagram.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.instagram.model.Like;
 import com.instagram.model.Publicacion;
+import com.instagram.model.TipoDePublicacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
 import com.instagram.service.IPublicacionService;
@@ -94,9 +98,9 @@ public class HomeController {
 		}
 	}
 
-	// METODO QUE LLEVA A LA VISTA DE PERFIL DEL USUARIO SELECCIONADO
+	// METODO QUE LLEVA A LA VISTA DE PERFIL/PUBLICACIONES DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/")
-	public String perfil(Model model, HttpSession session, @PathVariable String username) {
+	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username) {
 		model.addAttribute("title", " @" + username);
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		model.addAttribute("usuario", usuario);// usuario logueado
@@ -104,6 +108,22 @@ public class HomeController {
 		model.addAttribute("usuarioPerfil", usuarioPerfil);
 		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
 		model.addAttribute("publicaciones", publicacionesDelPerfil);
+		model.addAttribute("vista", 1);
+		return "usuario/perfil";
+	}
+	
+	// METODO QUE LLEVA A LA VISTA DE REELS DEL USUARIO SELECCIONADO
+	@GetMapping("/{username}/reels")
+	public String perfilConVistaEnReels(Model model, HttpSession session, @PathVariable String username) {
+		model.addAttribute("title", " @" + username);
+		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		model.addAttribute("usuario", usuario);// usuario logueado
+		Usuario usuarioPerfil = usuarioService.findByUsername(username).get();
+		model.addAttribute("usuarioPerfil", usuarioPerfil);
+		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
+		publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
+		model.addAttribute("publicaciones", publicacionesDelPerfil);
+		model.addAttribute("vista", 2);
 		return "usuario/perfil";
 	}
 

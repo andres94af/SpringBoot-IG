@@ -1,5 +1,7 @@
 package com.instagram.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,13 @@ public class PublicacionesServiceImpl implements IPublicacionService{
 
 	@Override
 	public List<Publicacion> findAll() {
-		return publicacionesRepo.findAll();
+		List<Publicacion> publicaciones = publicacionesRepo.findAll();
+		Collections.sort(publicaciones, new Comparator<Publicacion>() {
+			public int compare(Publicacion p1, Publicacion p2) {
+				return p2.getId().compareTo(p1.getId());
+			}
+		});
+		return publicaciones;
 	}
 
 	@Override
@@ -38,7 +46,12 @@ public class PublicacionesServiceImpl implements IPublicacionService{
 
 	@Override
 	public List<Publicacion> findByUsuario(Usuario usuario) {
-		return publicacionesRepo.findByUsuario(usuario);
+		List<Publicacion> publicaciones = publicacionesRepo.findByUsuario(usuario);
+		Collections.sort(publicaciones, new Comparator<Publicacion>() {
+			public int compare(Publicacion p1, Publicacion p2) {
+				return p2.getId().compareTo(p1.getId());
+			}
+		});
+		return publicaciones;
 	}
-
 }
