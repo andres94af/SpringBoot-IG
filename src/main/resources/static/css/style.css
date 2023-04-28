@@ -50,8 +50,9 @@
 .img-usuario-perfil {
 	width: 10rem;
 	border-radius: 50%;
+	border: solid 2.6px lightgray;
 }
 
-.alto-publicacion{
+.alto-publicacion {
 	background-color: red;
 }

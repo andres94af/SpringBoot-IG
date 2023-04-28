@@ -101,30 +101,81 @@ public class HomeController {
 	// METODO QUE LLEVA A LA VISTA DE PERFIL/PUBLICACIONES DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/")
 	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username) {
-		model.addAttribute("title", " @" + username);
-		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		model.addAttribute("usuario", usuario);// usuario logueado
-		Usuario usuarioPerfil = usuarioService.findByUsername(username).get();
-		model.addAttribute("usuarioPerfil", usuarioPerfil);
-		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
-		model.addAttribute("publicaciones", publicacionesDelPerfil);
-		model.addAttribute("vista", 1);
-		return "usuario/perfil";
+		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		if (!usuarioPerfil.isEmpty()) {
+			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+			model.addAttribute("title", " @" + username);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
+			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			model.addAttribute("vista", 1);
+			return "usuario/perfil";
+		} else {
+			return "redirect:/";
+		}
 	}
-	
+
 	// METODO QUE LLEVA A LA VISTA DE REELS DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/reels")
 	public String perfilConVistaEnReels(Model model, HttpSession session, @PathVariable String username) {
-		model.addAttribute("title", " @" + username);
-		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		model.addAttribute("usuario", usuario);// usuario logueado
-		Usuario usuarioPerfil = usuarioService.findByUsername(username).get();
-		model.addAttribute("usuarioPerfil", usuarioPerfil);
-		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
-		publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
-		model.addAttribute("publicaciones", publicacionesDelPerfil);
-		model.addAttribute("vista", 2);
-		return "usuario/perfil";
+		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		if (!usuarioPerfil.isEmpty()) {
+			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+			model.addAttribute("title", " @" + username);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
+			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+			publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
+			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			model.addAttribute("vista", 2);
+			return "usuario/perfil";
+		} else {
+			return "redirect:/";
+		}
+	}
+
+	// METODO QUE LLEVA A LA VISTA DE PUBLICACIONES GUARDADAS POR EL USUARIO
+	// LOGUEADO
+	// <----FALTA TERMINAR
+	@GetMapping("/{username}/saved")
+	public String perfilConVistaEnPublicacionesGuardadas(Model model, HttpSession session,
+			@PathVariable String username) {
+		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		if (!usuarioPerfil.isEmpty()) {
+			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+			model.addAttribute("title", " @" + username);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
+			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+			// aqui la logica de publicaciones guardadas
+			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			model.addAttribute("vista", 3);
+			return "usuario/perfil";
+		} else {
+			return "redirect:/";
+		}
+	}
+
+	// METODO QUE LLEVA A LA VISTA DE PUBLICACIONES GUARDADAS DEL USUARIO
+	// SELECCIONADO <----FALTA TERMINAR
+	@GetMapping("/{username}/tagged")
+	public String perfilConVistaEnPublicacionesEtiquetado(Model model, HttpSession session,
+			@PathVariable String username) {
+		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		if (!usuarioPerfil.isEmpty()) {
+			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+			model.addAttribute("title", " @" + username);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
+			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+			// aqui la logica de publicaciones en las que me etiquetaron
+			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			model.addAttribute("vista", 4);
+			return "usuario/perfil";
+		} else {
+			return "redirect:/";
+		}
 	}
 
 }
