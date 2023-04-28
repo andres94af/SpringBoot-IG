@@ -20,8 +20,17 @@
 							<div class="col-md-auto">
 								<h5 class="m-0" th:text="${usuarioPerfil.username}"></h5>
 							</div>
-							<div class="col-md-auto">
+							<div class="col-md-auto" th:if="${usuario==usuarioPerfil}">
 								<button class="btn btn-light">Editar perfil <i class="fs-5 bi bi-gear-wide"></i></button>
+							</div>
+							<div class="col-md-auto" th:unless="${usuario==usuarioPerfil}">
+								<div class="dropdown">
+								  <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i> Seguido</button>
+								  <ul class="dropdown-menu">
+								    <li><a class="dropdown-item" href="#"><i class="bi bi-check"></i> Seguir</a></li>
+								    <li><a class="dropdown-item" href="#"><i class="bi bi-x"></i> Dejar de seguir</a></li>
+								  </ul>
+								</div>
 							</div>
 						</div>
 						<div class="row my-3">
@@ -65,9 +74,64 @@
 				</div>
 		
 				<div class="row justify-content-start align-items-center">
-					<a th:each="publicacion : ${publicaciones}"  th:href="${publicacion.id}" class="col-md-4 p-1">
-						<img th:each="imagen : ${publicacion.imagenes}" th:src="${imagen.url}" class="img-fluid">
-					</a>
+					<div class="col-md-4 p-1" th:each="publicacion : ${publicaciones}">
+						<a type="button" data-bs-toggle="modal" th:data-bs-target="'#modalPubli'+${publicacion.id}">
+							<img th:each="imagen : ${publicacion.imagenes}" th:src="${imagen.url}" class="img-fluid">
+						</a>
+						<!-- Modal -->
+						<div class="modal modal-xl fade" th:id="'modalPubli'+${publicacion.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog ">
+						    <div class="modal-content">
+						    	<div class="modal-body"> 
+						        	<div class="row">
+						        		<div class="col-md-7">
+						        			<img th:each="imagen : ${publicacion.imagenes}" th:src="${imagen.url}" class="img-fluid">
+						        		</div>
+						        		<div class="col-md-5 d-flex align-items-start flex-column mb-3">
+						        			<div class="row mb-auto p-2">
+							        			<div class="modal-header mb-1 pt-0">
+											        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											    </div>
+												<div>
+													<p class="card-title mb-1">
+														<a th:href="@{/}+${publicacion.usuario.username}+'/'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0 fw-bold"></a> <span th:text="${publicacion.titulo}"></span>
+													</p>
+												</div>
+												<div th:each="comentario : ${publicacion.comentarios}">
+													<strong><span th:text="${comentario.usuario.username}"></span></strong> <span th:text="${comentario.mensaje}"></span>
+												</div>
+												<div class="mb-4">
+													<form th:action="@{/cuenta/agregarComentario/}+${publicacion.id}" method="post">
+														  <input name="comentario" th:id="'comentario'+${publicacion.id}" type="text" placeholder="Agregar un comentario..." class="input-comentario">
+													</form>
+												</div>
+											</div>
+											<div class="row p-2">
+												<div>
+													<div th:if="${publicacion.likes.size()}>0">
+														<p class="card-title text-truncate mb-1"><strong>Le gusta a </strong><span th:each="like : ${publicacion.likes}"><span th:text="${like.usuario.username}+', '"></span></span></p>
+													</div>
+													<form th:action="@{/cuenta/agregarQuitarLike/}+${publicacion.id}">
+														<button type="submit" class="btn-like" th:if="${publicacion.likes.size()}==0">
+															<i class="fs-4 bi bi-suit-heart text-dark"></i>
+														</button>
+														<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuario.id)}">
+															<i th:if="${tieneLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
+															<i th:unless="${tieneLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
+														</button>
+														<a th:href="'#comentario'+${publicacion.id}" class="card-link link-dark"><i class="fs-4 bi bi-chat-dots me-2"></i></a>
+														<a href="#" class="card-link link-dark"><i class="fs-4 bi bi-send"></i></a>
+													</form>
+												</div>
+											</div>
+						        		</div>
+						        	</div>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+						<!-- FIN Modal -->
+					</div>
 				</div>
 			</div>
 		</div>
