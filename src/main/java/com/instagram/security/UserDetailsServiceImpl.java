@@ -1,20 +1,16 @@
 package com.instagram.security;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
 import com.instagram.model.Usuario;
 import com.instagram.service.IUsuarioService;
-
 import jakarta.servlet.http.HttpSession;
 
-@Component
+@Service
 class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
@@ -28,11 +24,9 @@ class UserDetailsServiceImpl implements UserDetailsService {
 		Optional<Usuario> usuarioOpt = usuarioService.findByEmail(email);
 		if (usuarioOpt.isPresent()) {
 			session.setAttribute("idUsuario", usuarioOpt.get().getId());
-			Usuario usuario = usuarioOpt.get();
-			return User.builder().username(usuario.getUsername()).password(usuario.getPassword())
-					.roles(usuario.getAutorizacion().getRol()).build();
+			return new UserDetailsImpl(usuarioOpt.get());
 		} else {
-			throw new UsernameNotFoundException("Usuario no encontrado");
+			throw new UsernameNotFoundException("El usuario con email " + email + " no existe.");
 		}
 	}
 

@@ -1,10 +1,9 @@
 package com.instagram.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -17,8 +16,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
+
+	public SecurityConfig(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -26,23 +28,22 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
+	AuthenticationManager authManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class)
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder())
+				.and().build();
 	}
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
+		return http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/login", "/registro", "/generarCuenta").permitAll();
-					auth.requestMatchers("/**").hasRole("USER");
-					auth.requestMatchers("/administrador").hasRole("ADMIN");
+					auth.requestMatchers("/**").authenticated();
 					})
-				.userDetailsService(userDetailsService)
 				.formLogin(login -> login.loginPage("/login").permitAll().defaultSuccessUrl("/iniciarSesion"))
-				.logout(logout -> logout.permitAll());
-		return http.build();
+				.logout(logout -> logout.permitAll()).build();
 	}
 
 	@Bean
