@@ -53,6 +53,7 @@
 	border: solid 2.6px lightgray;
 }
 
-.alto-publicacion {
-	background-color: red;
+.btn-publicar {
+	background-color: transparent;
+	border: none;
 }

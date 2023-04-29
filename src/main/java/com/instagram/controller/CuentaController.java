@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.instagram.model.Comentario;
+import com.instagram.model.Imagen;
 import com.instagram.model.Like;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Usuario;
@@ -26,6 +27,7 @@ import com.instagram.service.IUsuarioService;
 
 import jakarta.servlet.http.HttpSession;
 
+//CONTROLADOR QUE GESTIONA LAS CUENTAS, LIKES, COMENTARIOS, NUEVAS PUBLICACIONES, SEGUIDORES, ETC.
 @Controller
 @RequestMapping("/cuenta")
 public class CuentaController {
@@ -60,7 +62,7 @@ public class CuentaController {
 			Publicacion publicacion = publicacionService.findById(id).get();
 			Comentario nuevoComentario = new Comentario(usuario, LocalDate.now(), comentario, publicacion);
 			comentarioService.save(nuevoComentario);
-			return "redirect:/#post"+id;
+			return "redirect:/#post" + id;
 		}
 	}
 
@@ -76,12 +78,23 @@ public class CuentaController {
 					&& l.getPublicacion().getId().equals(like.getPublicacion().getId())) {
 				log.info("NO GUSTA MAS");
 				likeService.delete(l.getId());
-				return "redirect:/#post"+id;
+				return "redirect:/#post" + id;
 			}
 		}
 		log.info("ME GUSTA");
 		likeService.save(like);
-		return "redirect:/#post"+id;
+		return "redirect:/#post" + id;
+	}
+	
+	@PostMapping("/crearPublicacion")
+	public String crearNuevaPublicacion(HttpSession session, Publicacion publicacion, @RequestParam String imagen) {
+		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		publicacion.setUsuario(usuario);
+		publicacion.setFechaCreacion(LocalDate.now());
+		publicacionService.save(publicacion);
+		Imagen imagenPublicacion = new Imagen(usuario, imagen, publicacion);
+		imagenService.save(imagenPublicacion);
+		return "redirect:/#post" + publicacion.getId();
 	}
 
 }

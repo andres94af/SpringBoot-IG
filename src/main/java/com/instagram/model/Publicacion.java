@@ -124,9 +124,10 @@ public class Publicacion {
 
 	@Override
 	public String toString() {
-		return "Publicacion [id=" + id + "titulo=" + titulo + ", usuario=" + usuario.getUsername() + ", tipo=" + tipo + ", imagenes="
-				+ imagenes.size() + ", ubicacion=" + ubicacion + ", fechaCreacion=" + fechaCreacion + ", comentarios="
-				+ comentarios.size() + ", likes=" + likes.size() + "]";
+		return "Publicacion [id=" + id + ", usuario=" + usuario.getUsername() + ", tipo=" + tipo + ", titulo=" + titulo
+				+ ", ubicacion=" + ubicacion + ", fechaCreacion=" + fechaCreacion + "]";
 	}
+
+	
 
 }

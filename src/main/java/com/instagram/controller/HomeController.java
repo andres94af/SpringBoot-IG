@@ -1,14 +1,7 @@
 package com.instagram.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.instagram.model.Like;
 import com.instagram.model.Publicacion;
 import com.instagram.model.TipoDePublicacion;
 import com.instagram.model.Usuario;
@@ -29,11 +20,10 @@ import com.instagram.service.IUsuarioService;
 
 import jakarta.servlet.http.HttpSession;
 
+//CONTROLADOR QUE REDIRECCIONA A LAS VISTAS Y CARGA CONTENIDO
 @Controller
 @RequestMapping("")
 public class HomeController {
-
-	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
 	PasswordEncoder passEncoder = new BCryptPasswordEncoder();
 
