@@ -10,5 +10,5 @@ public interface IImagenService {
 	List<Imagen> findAll();
 	Optional<Imagen> findByUsuario(Usuario usuario);
 	Imagen save(Imagen imagen);
-	void delete(Imagen imagen);
+	void deleteById(Integer id);
 }

@@ -111,5 +111,27 @@ public class CuentaController {
 		
 		return "redirect:/#post" + publicacion.getId();
 	}
+	
+	@SuppressWarnings("rawtypes")
+	@PostMapping("/actualizarFotoPerfil")
+	public String actualizarFotoDeFerfil(HttpSession session, @RequestParam("img") MultipartFile file) throws IOException {
+		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		Imagen imgPerfilAct = usuario.getImgPerfil();
+		
+		BufferedImage bi = ImageIO.read(file.getInputStream());
+		if (bi==null) return "redirect:/"+usuario.getUsername()+"/?img_error";
+		Map result = cloudinarySevice.upload(file);
+		Imagen nuevaImgPerfil = new Imagen((String)result.get("url"), (String)result.get("public_id"), usuario, null);
+		imagenService.save(nuevaImgPerfil);
+		
+		usuario.setImgPerfil(nuevaImgPerfil);
+		usuarioService.update(usuario);
+		
+		imagenService.deleteById(imgPerfilAct.getId());
+		if (!imgPerfilAct.getImgId().equals("hlqmcwbljw9ymsfopwkn")) {
+			cloudinarySevice.delete(imgPerfilAct.getImgId());			
+		}
+		return "redirect:/"+usuario.getUsername()+"/";
+	}
 
 }

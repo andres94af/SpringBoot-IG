@@ -32,8 +32,8 @@ public class ImagenServiceImpl implements IImagenService{
 	}
 
 	@Override
-	public void delete(Imagen imagen) {
-		imagenRepo.delete(imagen);
+	public void deleteById(Integer id) {
+		imagenRepo.deleteById(id);;
 	}
 
 }

@@ -26,6 +26,8 @@ public class Usuario {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fechaNacimiento;
 	private String genero;
+	private String info1;
+	private String info2;
 	@Column(unique = true)
 	private String email;
 	@Column(unique = true)
@@ -47,7 +49,7 @@ public class Usuario {
 
 	public Usuario(Integer id, String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
 			String username, String password, Imagen imgPerfil, Autorizacion autorizacion,
-			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos) {
+			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos, String info2, String info1) {
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -61,6 +63,8 @@ public class Usuario {
 		this.publicaciones = publicaciones;
 		this.seguidores = seguidores;
 		this.seguidos = seguidos;
+		this.info1 = info1;
+		this.info2 = info2;
 	}
 
 	public Integer getId() {
@@ -165,6 +169,22 @@ public class Usuario {
 
 	public void setSeguidos(List<Seguido> seguidos) {
 		this.seguidos = seguidos;
+	}
+
+	public String getInfo1() {
+		return info1;
+	}
+
+	public void setInfo1(String info1) {
+		this.info1 = info1;
+	}
+
+	public String getInfo2() {
+		return info2;
+	}
+
+	public void setInfo2(String info2) {
+		this.info2 = info2;
 	}
 
 	@Override
