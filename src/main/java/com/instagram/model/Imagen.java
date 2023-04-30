@@ -15,18 +15,20 @@ public class Imagen {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String url;
+	private String imgId;
 	@OneToOne
 	private Usuario usuario;
-	private String url;
 	@ManyToOne
 	private Publicacion publicacion;
 
 	public Imagen() {
 	}
 
-	public Imagen(Usuario usuario, String url, Publicacion publicacion) {
-		this.usuario = usuario;
+	public Imagen(String url, String imgId, Usuario usuario, Publicacion publicacion) {
 		this.url = url;
+		this.imgId = imgId;
+		this.usuario = usuario;
 		this.publicacion = publicacion;
 	}
 
@@ -62,10 +64,19 @@ public class Imagen {
 		this.publicacion = publicacion;
 	}
 
+	public String getImgId() {
+		return imgId;
+	}
+
+	public void setImgId(String imgId) {
+		this.imgId = imgId;
+	}
+
 	@Override
 	public String toString() {
-		return "Imagen [usuario=" + usuario.getUsername() + ", url=" + url + ", publicacion=" + publicacion.getId()
-				+ "]";
+		return "Imagen [id=" + id + ", url=" + url + ", imgId=" + imgId + ", usuario=" + usuario.getUsername() + "]";
 	}
+
+	
 
 }

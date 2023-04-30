@@ -1,9 +1,11 @@
 package com.instagram.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.instagram.model.Usuario;
@@ -14,7 +16,7 @@ public class UserDetailsImpl implements UserDetails{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	private static final String ROLE_PREFIX = "ROLE_";
 	private final Usuario usuario;
 
 	public UserDetailsImpl(Usuario usuario) {
@@ -23,7 +25,9 @@ public class UserDetailsImpl implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Collections.emptyList();
+        List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
+        list.add(new SimpleGrantedAuthority(ROLE_PREFIX + usuario.getAutorizacion().getRol()));
+        return list;
 	}
 
 	@Override

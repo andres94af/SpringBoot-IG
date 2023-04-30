@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "cloudinary.name",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.name'"
+  },
+  {
+    "name": "cloudinary.key",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.key'"
+  },
+  {
+    "name": "cloudinary.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.secret'"
+  }
+]}

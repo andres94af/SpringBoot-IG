@@ -1,7 +1,12 @@
 package com.instagram.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.instagram.model.Comentario;
 import com.instagram.model.Imagen;
 import com.instagram.model.Like;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Usuario;
+import com.instagram.service.CloudinarySevice;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IComentarioService;
 import com.instagram.service.IImagenService;
@@ -34,6 +40,9 @@ public class CuentaController {
 
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
+	@Autowired
+	CloudinarySevice cloudinarySevice;
+	
 	@Autowired
 	IUsuarioService usuarioService;
 
@@ -86,14 +95,20 @@ public class CuentaController {
 		return "redirect:/#post" + id;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@PostMapping("/crearPublicacion")
-	public String crearNuevaPublicacion(HttpSession session, Publicacion publicacion, @RequestParam String imagen) {
+	public String crearNuevaPublicacion(HttpSession session, Publicacion publicacion, @RequestParam("img") MultipartFile file) throws IOException {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		publicacion.setUsuario(usuario);
 		publicacion.setFechaCreacion(LocalDate.now());
 		publicacionService.save(publicacion);
-		Imagen imagenPublicacion = new Imagen(usuario, imagen, publicacion);
+		
+		BufferedImage bi = ImageIO.read(file.getInputStream());
+		if (bi==null) return "redirect:/?img_error";
+		Map result = cloudinarySevice.upload(file);
+		Imagen imagenPublicacion = new Imagen((String)result.get("url"), (String)result.get("public_id"), usuario, publicacion);
 		imagenService.save(imagenPublicacion);
+		
 		return "redirect:/#post" + publicacion.getId();
 	}
 
