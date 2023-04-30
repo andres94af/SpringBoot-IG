@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +40,8 @@ public class CuentaController {
 
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
+	PasswordEncoder passEncoder = new BCryptPasswordEncoder();
+	
 	@Autowired
 	CloudinarySevice cloudinarySevice;
 	
@@ -131,6 +133,22 @@ public class CuentaController {
 		if (!imgPerfilAct.getImgId().equals("hlqmcwbljw9ymsfopwkn")) {
 			cloudinarySevice.delete(imgPerfilAct.getImgId());			
 		}
+		return "redirect:/"+usuario.getUsername()+"/";
+	}
+	
+	@PostMapping("/actualizarDatos")
+	public String actualizarDatosDelUsuario(@RequestParam Integer id, @RequestParam String username, @RequestParam String password, @RequestParam String info1, @RequestParam String info2) {
+		Usuario usuario = usuarioService.findById(id).get();
+		if (!password.equals("")) usuario.setPassword(passEncoder.encode(password));
+		List<Usuario> usuarios = usuarioService.findAll();
+		usuarios.removeIf(u -> u.getUsername().equals(usuario.getUsername()));
+		for(Usuario u : usuarios) {
+			if(u.getUsername().equals(username))return "redirect:/"+usuario.getUsername()+"/?existe_u";				
+		}
+		usuario.setUsername(username);
+		usuario.setInfo1(info1);
+		usuario.setInfo2(info2);
+		usuarioService.update(usuario);
 		return "redirect:/"+usuario.getUsername()+"/";
 	}
 
