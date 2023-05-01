@@ -12,10 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.instagram.model.Autorizacion;
 import com.instagram.model.Imagen;
 import com.instagram.model.Publicacion;
+import com.instagram.model.Seguido;
+import com.instagram.model.Seguidor;
 import com.instagram.model.Usuario;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IImagenService;
 import com.instagram.service.IPublicacionService;
+import com.instagram.service.ISeguidoService;
+import com.instagram.service.ISeguidorService;
 import com.instagram.service.IUsuarioService;
 
 @SpringBootTest
@@ -32,13 +36,23 @@ class InstagramSpringBootApplicationTests {
 	
 	@Autowired
 	IPublicacionService publicacionService;
+	
+	@Autowired
+	ISeguidoService seguidoService;
+	
+	@Autowired
+	ISeguidorService seguidorService;
 
 	@Test
 	void contextLoads() {
-		Usuario usuarioPerfil = usuarioService.findByUsername("anndyfernandez").get();
-		System.out.println(usuarioPerfil);
-		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil);
-		System.out.println(publicacionesDelPerfil);
+		Usuario aleLogueada = usuarioService.findByUsername("aleFerreyra01").get();
+		Usuario andiVisitado = usuarioService.findByUsername("anndyfernandez").get();
+		Seguidor nuevoSeguidorParaAndy = new Seguidor(aleLogueada, andiVisitado);
+		Seguido nuevoUsuarioSeguidoPorAle = new Seguido(andiVisitado, aleLogueada);
+		seguidorService.save(nuevoSeguidorParaAndy);
+		seguidoService.save(nuevoUsuarioSeguidoPorAle);
+		System.out.println(nuevoSeguidorParaAndy);
+		System.out.println(nuevoUsuarioSeguidoPorAle);
 	}
 
 }

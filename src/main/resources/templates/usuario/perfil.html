@@ -39,8 +39,8 @@
 								<div class="dropdown">
 								  <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i> Seguido</button>
 								  <ul class="dropdown-menu">
-								    <li><a class="dropdown-item" href="#"><i class="bi bi-check"></i> Seguir</a></li>
-								    <li><a class="dropdown-item" href="#"><i class="bi bi-x"></i> Dejar de seguir</a></li>
+								    <li><a class="dropdown-item" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}"><i class="bi bi-check"></i> Seguir</a></li>
+								    <li><a class="dropdown-item" th:if="${seguido}" th:href="@{/cuenta/dejarDeSeguir/}+${usuarioPerfil.id}"><i class="bi bi-x"></i> Dejar de seguir</a></li>
 								  </ul>
 								</div>
 							</div>

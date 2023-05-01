@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.instagram.model.Publicacion;
+import com.instagram.model.Seguidor;
 import com.instagram.model.TipoDePublicacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
@@ -91,7 +92,9 @@ public class HomeController {
 	// METODO QUE LLEVA A LA VISTA DE PERFIL/PUBLICACIONES DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/")
 	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username) {
+		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
 		if (!usuarioPerfil.isEmpty()) {
 			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
@@ -100,6 +103,12 @@ public class HomeController {
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
 			model.addAttribute("vista", 1);
+			for (Seguidor s : seguidoresDelPerfil) {
+				if (s.getNombre().equals(usuarioLogueado)) {
+					model.addAttribute("seguido", true);
+					break;
+				}
+			}
 			return "usuario/perfil";
 		} else {
 			return "redirect:/";
@@ -109,7 +118,9 @@ public class HomeController {
 	// METODO QUE LLEVA A LA VISTA DE REELS DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/reels")
 	public String perfilConVistaEnReels(Model model, HttpSession session, @PathVariable String username) {
+		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
 		if (!usuarioPerfil.isEmpty()) {
 			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
@@ -119,6 +130,12 @@ public class HomeController {
 			publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
 			model.addAttribute("vista", 2);
+			for (Seguidor s : seguidoresDelPerfil) {
+				if (s.getNombre().equals(usuarioLogueado)) {
+					model.addAttribute("seguido", true);
+					break;
+				}
+			}
 			return "usuario/perfil";
 		} else {
 			return "redirect:/";
@@ -152,7 +169,9 @@ public class HomeController {
 	@GetMapping("/{username}/tagged")
 	public String perfilConVistaEnPublicacionesEtiquetado(Model model, HttpSession session,
 			@PathVariable String username) {
+		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
 		if (!usuarioPerfil.isEmpty()) {
 			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
@@ -162,6 +181,12 @@ public class HomeController {
 			// aqui la logica de publicaciones en las que me etiquetaron
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
 			model.addAttribute("vista", 4);
+			for (Seguidor s : seguidoresDelPerfil) {
+				if (s.getNombre().equals(usuarioLogueado)) {
+					model.addAttribute("seguido", true);
+					break;
+				}
+			}
 			return "usuario/perfil";
 		} else {
 			return "redirect:/";

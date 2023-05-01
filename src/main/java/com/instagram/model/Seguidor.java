@@ -15,13 +15,15 @@ public class Seguidor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@ManyToOne
+	private Usuario nombre;
+	@ManyToOne
 	private Usuario usuario;
 
 	public Seguidor() {
 	}
 
-	public Seguidor(Integer id, Usuario usuario) {
-		this.id = id;
+	public Seguidor(Usuario nombre, Usuario usuario) {
+		this.nombre = nombre;
 		this.usuario = usuario;
 	}
 
@@ -41,9 +43,17 @@ public class Seguidor {
 		this.usuario = usuario;
 	}
 
+	public Usuario getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(Usuario nombre) {
+		this.nombre = nombre;
+	}
+
 	@Override
 	public String toString() {
-		return "Seguidor [id=" + id + ", usuario=" + usuario.getUsername() + "]";
+		return "Seguidor [" + nombre.getUsername() + ", sigue a usuario= " + usuario.getUsername() + "]";
 	}
 
 }
