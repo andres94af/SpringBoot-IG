@@ -149,7 +149,7 @@ public class CuentaController {
 		usuario.setInfo1(info1);
 		usuario.setInfo2(info2);
 		usuarioService.update(usuario);
-		return "redirect:/"+usuario.getUsername()+"/";
+		return "redirect:/"+usuario.getUsername()+"/?act_e";
 	}
 
 }

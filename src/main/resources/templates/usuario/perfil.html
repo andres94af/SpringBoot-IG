@@ -11,6 +11,18 @@
 	<div class="container-fluid text center mt-2">
 		<div class="row justify-content-center">
 			<div class="col-md-7 espacio">
+				<div th:if="${param.existe_u}" class="alert alert-danger alert-dismissible fade show" role="alert">
+				  Existe un usuario con el nombre solicitado, intenta con otro.
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				<div th:if="${param.img_error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+				  No es posible cargar este tipo de archivos. Solo JPG, JPEG, PNG.
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				<div th:if="${param.act_e}" class="alert alert-success alert-dismissible fade show" role="alert">
+				  Sus datos se modificaron con exito!
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
 				<div class="row align-items-center">
 					<div class="col-md-3 ms-5">
 						<img th:src="${usuarioPerfil.imgPerfil.url}" class="img-usuario-perfil">

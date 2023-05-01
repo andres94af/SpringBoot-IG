@@ -37,7 +37,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	public Usuario save(Usuario usuario) {
 		usuarioRepo.save(usuario);
 		Autorizacion autorizacion = new Autorizacion(usuario, true, "USER");
-		Imagen imagenDefault = new Imagen("https://res.cloudinary.com/da52tfqfk/image/upload/v1682857184/hlqmcwbljw9ymsfopwkn.jpg", "hlqmcwbljw9ymsfopwkn", usuario, null);
+		String urlImgDefault = "https://res.cloudinary.com/da52tfqfk/image/upload/v1682857184/instagram/hlqmcwbljw9ymsfopwkn.jpg";
+		String idImgDefault ="hlqmcwbljw9ymsfopwkn";
+		Imagen imagenDefault = new Imagen(urlImgDefault, idImgDefault, usuario, null);
 		autorizacionService.save(autorizacion);
 		imagenService.save(imagenDefault);
 		usuario.setAutorizacion(autorizacion);
