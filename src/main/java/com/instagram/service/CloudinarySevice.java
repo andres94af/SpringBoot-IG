@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
 import com.cloudinary.utils.ObjectUtils;
 
 @Service
@@ -32,7 +33,9 @@ public class CloudinarySevice {
 	@SuppressWarnings("rawtypes")
 	public Map upload(MultipartFile multipartFile) throws IOException {
 		File file = convert(multipartFile);
-		Map result = cloudinary.uploader().upload(file, ObjectUtils.asMap("folder", "instagram"));
+		Map result = cloudinary.uploader().upload(file, ObjectUtils.asMap(
+				"folder", "instagram",
+				"transformation", new Transformation().aspectRatio("1.0").gravity("auto").width(650).crop("fill")));
 		file.delete();
 		return result;
 	}
