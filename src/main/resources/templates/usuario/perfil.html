@@ -164,6 +164,16 @@
 			    <label for="img" class="form-label">Foto de perfil:</label>
 			    <input accept="image/png,image/jpeg,image/jpg" type="file" class="form-control" id="img" name="img" required>
 			  </div>
+			  <div class="mb-3">
+			    <label for="efecto" class="form-label">Efectos:</label>
+			    <select class="form-select" id="efecto" name="efecto">
+				  <option selected value="">-- Sin efecto --</option>
+				  <option value="cartoonify">Caricatura</option>
+				  <option value="grayscale">Escala de grises</option>
+				  <option value="improve:50">Mejorada</option>
+				  <option value="sepia">Sepia</option>
+				</select>
+			  </div>
 			  <div class="text-center">
 			  	<button type="submit" onclick="spinner_visible();" class="link-info link-offset-2 link-underline link-underline-opacity-0 btn-publicar"><strong>Actualizar imagen</strong>
 			  		<div id="spinner-img" class="spinner-border text-info text-center spinner-border-sm" role="status"></div>

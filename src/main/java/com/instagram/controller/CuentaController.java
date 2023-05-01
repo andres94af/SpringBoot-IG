@@ -3,11 +3,9 @@ package com.instagram.controller;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +41,7 @@ import jakarta.servlet.http.HttpSession;
 //CONTROLADOR QUE GESTIONA LAS CUENTAS, LIKES, COMENTARIOS, NUEVAS PUBLICACIONES, SEGUIDORES, ETC.
 @Controller
 @RequestMapping("/cuenta")
+@SuppressWarnings("rawtypes")
 public class CuentaController {
 
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
@@ -110,7 +109,6 @@ public class CuentaController {
 		return "redirect:/#post" + id;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@PostMapping("/crearPublicacion")
 	public String crearNuevaPublicacion(HttpSession session, Publicacion publicacion,
 			@RequestParam("img") MultipartFile file) throws IOException {
@@ -122,7 +120,7 @@ public class CuentaController {
 		BufferedImage bi = ImageIO.read(file.getInputStream());
 		if (bi == null)
 			return "redirect:/?img_error";
-		Map result = cloudinarySevice.upload(file);
+		Map result = cloudinarySevice.upload(file, "", "");// <------------------FALTA AGREGAR EFECTO
 		Imagen imagenPublicacion = new Imagen((String) result.get("url"), (String) result.get("public_id"), usuario,
 				publicacion);
 		imagenService.save(imagenPublicacion);
@@ -130,17 +128,16 @@ public class CuentaController {
 		return "redirect:/#post" + publicacion.getId();
 	}
 
-	@SuppressWarnings("rawtypes")
 	@PostMapping("/actualizarFotoPerfil")
-	public String actualizarFotoDeFerfil(HttpSession session, @RequestParam("img") MultipartFile file)
-			throws IOException {
+	public String actualizarFotoDeFerfil(HttpSession session, @RequestParam("img") MultipartFile file,
+			@RequestParam("efecto") String efecto) throws IOException {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		Imagen imgPerfilAct = usuario.getImgPerfil();
 
 		BufferedImage bi = ImageIO.read(file.getInputStream());
 		if (bi == null)
 			return "redirect:/" + usuario.getUsername() + "/?img_error";
-		Map result = cloudinarySevice.upload(file);
+		Map result = cloudinarySevice.upload(file, efecto, "");
 		Imagen nuevaImgPerfil = new Imagen((String) result.get("url"), (String) result.get("public_id"), usuario, null);
 		imagenService.save(nuevaImgPerfil);
 
