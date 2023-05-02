@@ -46,8 +46,8 @@ public class HomeController {
 		model.addAttribute("historias", usuariosHistorias);// usuarios seguidos, historias
 		List<Usuario> usuariosSugeridos = usuarioService.findAllNoSeguidos(usuario);
 		model.addAttribute("sugerencias", usuariosSugeridos);// usuarios NO seguidos sugerencias
-		List<Publicacion> publicaciones = publicacionService.findAll();
-		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo(VER)
+		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuario);
+		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo
 		return "usuario/inicio";
 	}
 

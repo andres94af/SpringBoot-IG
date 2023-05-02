@@ -1,5 +1,6 @@
 package com.instagram.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,10 +14,13 @@ import com.instagram.model.Usuario;
 import com.instagram.repository.IPublicacionRepository;
 
 @Service
-public class PublicacionesServiceImpl implements IPublicacionService{
-	
+public class PublicacionesServiceImpl implements IPublicacionService {
+
 	@Autowired
 	IPublicacionRepository publicacionesRepo;
+	
+	@Autowired
+	IUsuarioService usuarioService;
 
 	@Override
 	public List<Publicacion> findAll() {
@@ -53,5 +57,25 @@ public class PublicacionesServiceImpl implements IPublicacionService{
 			}
 		});
 		return publicaciones;
+	}
+
+	@Override
+	public List<Publicacion> publicacionesQueSigo(Usuario usuario) {
+		List<Publicacion> publicaciones = publicacionesRepo.findAll();
+		List<Usuario> seguidos = usuarioService.findAllSeguidos(usuario);
+		List<Publicacion> publicacionesQueSigo = new ArrayList<>();
+		for (Publicacion p : publicaciones) {
+			for (Usuario s : seguidos) {
+				if (p.getUsuario().equals(s) || p.getUsuario().equals(usuario)) {
+					publicacionesQueSigo.add(p);
+				}
+			}
+		}
+		Collections.sort(publicacionesQueSigo, new Comparator<Publicacion>() {
+			public int compare(Publicacion p1, Publicacion p2) {
+				return p2.getId().compareTo(p1.getId());
+			}
+		});
+		return publicacionesQueSigo;
 	}
 }
