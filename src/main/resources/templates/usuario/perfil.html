@@ -37,7 +37,7 @@
 							</div>
 							<div class="col-md-auto" th:unless="${usuario==usuarioPerfil}">
 								<div class="dropdown">
-								  <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i> Seguido</button>
+								  <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></button>
 								  <ul class="dropdown-menu">
 								    <li><a class="dropdown-item" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}"><i class="bi bi-check"></i> Seguir</a></li>
 								    <li><a class="dropdown-item" th:if="${seguido}" th:href="@{/cuenta/dejarDeSeguir/}+${usuarioPerfil.id}"><i class="bi bi-x"></i> Dejar de seguir</a></li>
@@ -50,17 +50,17 @@
 								<p class="m-0"><span th:text="${usuarioPerfil.publicaciones.size()}"><strong></strong></span> publicaciones</p>
 							</div>
 							<div class="col-md-auto me-3">
-								<p class="m-0"><a><span th:text="${usuarioPerfil.seguidores.size()}"><strong></strong></span> <span>seguidores</span></a></p>
+								<p class="m-0"><a type="button" data-bs-toggle="modal" data-bs-target="#seguidores"><span th:text="${usuarioPerfil.seguidores.size()}"><strong></strong></span> <span>seguidores</span></a></p>
 							</div>
 							<div class="col-md-auto me-3">								
-								<p class="m-0"><a><span th:text="${usuarioPerfil.seguidos.size()}"><strong></strong></span> <span>seguidos</span></a></p>
+								<p class="m-0"><a type="button" data-bs-toggle="modal" data-bs-target="#seguidos"><span th:text="${usuarioPerfil.seguidos.size()}"><strong></strong></span> <span>seguidos</span></a></p>
 							</div>
 						</div>
 						<div class="row my-3">
 							<div class="col-md-6">
 								<h6 class="m-0" th:text="${usuarioPerfil.nombre}+' '+${usuarioPerfil.apellido}"></h6>
-								<p class="m-0 text-secondary"><small th:text="${usuarioPerfil.info1}">Info adicional 1</small></p>	
-								<p class="m-0 text-secondary"><small th:text="${usuarioPerfil.info2}">Info adicional 2</small></p>					
+								<p class="m-0 text-secondary"><small th:text="${usuarioPerfil.info1}"></small></p>	
+								<p class="m-0 text-secondary"><small th:text="${usuarioPerfil.info2}"></small></p>					
 							</div>
 						</div>
 					</div>
@@ -151,11 +151,11 @@
 	<!-- FIN Contenido de la Pagina -->
 	
 	<!-- Modal crear publicacion -->
-	<div class="modal fade" id="editarDatos" tabindex="-1" aria-hidden="true" aria-labelledby="exampleModalLabel">
+	<div class="modal fade" id="editarDatos" tabindex="-1" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h1 class="modal-title fs-5">Editar datos de la cuenta</h1>
+	        <h1 class="modal-title fs-5">Datos de la cuenta</h1>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
@@ -207,6 +207,54 @@
 	  </div>
 	</div>
 	<!-- FIN Modal crear publicacion -->
+	
+	<!-- Modal Seguidores -->
+	<div class="modal fade" id="seguidores" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5">Seguidores</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body p-1" th:each="seguidor : ${usuarioPerfil.seguidores}">
+	      	<div class="row justify-content-center align-items-center">
+	      		<div class="col-auto align-items-center">
+	      			<img th:src="${seguidor.nombre.imgPerfil.url}" class="img-fluid img-perfil-nav">
+	      		</div>
+	      		<div class="col-6">
+		       		<a th:href="@{/}+${seguidor.nombre.username}+'/'" class="link-dark link-underline-opacity-0"><strong th:text="${seguidor.nombre.username}"></strong></a>
+	      			<p class="text-secondary m-0" th:text="${seguidor.nombre.nombre}+' ' +${seguidor.nombre.apellido}"></p>
+	      		</div>
+	       	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- FIN Modal Seguidores -->
+	
+	<!-- Modal Seguidos -->
+	<div class="modal fade" id="seguidos" tabindex="-1" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5">Seguidos</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body p-1" th:each="seguido : ${usuarioPerfil.seguidos}">
+	      	<div class="row justify-content-center align-items-center">
+	      		<div class="col-auto align-items-center">
+	      			<img th:src="${seguido.nombre.imgPerfil.url}" class="img-fluid img-perfil-nav">
+	      		</div>
+	      		<div class="col-6">
+		       		<a th:href="@{/}+${seguido.nombre.username}+'/'" class="link-dark link-underline-opacity-0"><strong th:text="${seguido.nombre.username}"></strong></a>
+	      			<p class="text-secondary m-0" th:text="${seguido.nombre.nombre}+' ' +${seguido.nombre.apellido}"></p>
+	      		</div>
+	       	</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- FIN Modal Seguidos -->
 
 	<!-- Scripts -->
 	<div th:replace="~{layout/layout.html :: scripts}"></div>
