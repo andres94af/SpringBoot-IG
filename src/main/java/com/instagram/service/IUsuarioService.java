@@ -14,4 +14,6 @@ public interface IUsuarioService {
 	Optional<Usuario> findByEmail(String email);
 	Optional<Usuario> findByUsername(String username);
 	void delete(Usuario usuario);
+	List<Usuario> findAllSeguidos(Usuario usuario);
+	List<Usuario> findAllNoSeguidos(Usuario usuario);
 }

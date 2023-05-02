@@ -120,7 +120,7 @@ public class CuentaController {
 		BufferedImage bi = ImageIO.read(file.getInputStream());
 		if (bi == null)
 			return "redirect:/?img_error";
-		Map result = cloudinarySevice.upload(file, "", "");// <------------------FALTA AGREGAR EFECTO
+		Map result = cloudinarySevice.upload(file, "", "instagram/img_publicacion");// <------------------FALTA AGREGAR EFECTO
 		Imagen imagenPublicacion = new Imagen((String) result.get("url"), (String) result.get("public_id"), usuario,
 				publicacion);
 		imagenService.save(imagenPublicacion);
@@ -137,7 +137,7 @@ public class CuentaController {
 		BufferedImage bi = ImageIO.read(file.getInputStream());
 		if (bi == null)
 			return "redirect:/" + usuario.getUsername() + "/?img_error";
-		Map result = cloudinarySevice.upload(file, efecto, "");
+		Map result = cloudinarySevice.upload(file, efecto, "instagram/img_perfil");
 		Imagen nuevaImgPerfil = new Imagen((String) result.get("url"), (String) result.get("public_id"), usuario, null);
 		imagenService.save(nuevaImgPerfil);
 

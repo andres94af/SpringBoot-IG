@@ -32,7 +32,7 @@ public class CloudinarySevice {
 
 	public Map upload(MultipartFile multipartFile, String efecto, String carpeta) throws IOException {
 		File file = convert(multipartFile);
-		Map result = cloudinary.uploader().upload(file, ObjectUtils.asMap("folder", "instagram", "transformation",
+		Map result = cloudinary.uploader().upload(file, ObjectUtils.asMap("folder", carpeta, "transformation",
 				new Transformation().aspectRatio("1.0").gravity("auto").width(650).crop("fill").effect(efecto)));
 		file.delete();
 		return result;

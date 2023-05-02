@@ -42,9 +42,10 @@ public class HomeController {
 	public String inicio(Model model, HttpSession session) {
 		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 		model.addAttribute("usuario", usuario);// usuario logueado
-		List<Usuario> usuarios = usuarioService.findAll();
-		usuarios.removeIf(u -> u.equals(usuario));
-		model.addAttribute("usuarios", usuarios);// seguidos(VER)
+		List<Usuario> usuariosHistorias = usuarioService.findAllSeguidos(usuario);
+		model.addAttribute("historias", usuariosHistorias);// usuarios seguidos, historias
+		List<Usuario> usuariosSugeridos = usuarioService.findAllNoSeguidos(usuario);
+		model.addAttribute("sugerencias", usuariosSugeridos);// usuarios NO seguidos sugerencias
 		List<Publicacion> publicaciones = publicacionService.findAll();
 		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo(VER)
 		return "usuario/inicio";

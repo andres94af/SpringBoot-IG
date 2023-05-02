@@ -12,7 +12,11 @@
 		<div class="row justify-content-end">
 			<div class="col-md-4">
 				<div class="row mb-2">
-					<div class="col text-center col-historia" th:each="user : ${usuarios}">
+					<div class="col text-center col-historia">
+						<img th:src="${usuario.imgPerfil.url}" class="img-historia">
+						<p class="text-truncate"><small><a th:href="@{/}+${usuario.username}+'/'" th:text="${usuario.username}" class="link-dark link-underline-opacity-0"></a></small></p>
+					</div>
+					<div class="col text-center col-historia" th:each="user : ${historias}">
 						<img th:src="${user.imgPerfil.url}" class="img-historia">
 						<p class="text-truncate"><small><a th:href="@{/}+${user.username}+'/'" th:text="${user.username}" class="link-dark link-underline-opacity-0"></a></small></p>
 					</div>
@@ -76,7 +80,7 @@
 				<div class="row mt-4">
 					<h6 class="card-text text-secondary">Sugerencias para ti</h6>
 				</div>
-				<div class="row mt-3" th:each="usuarioSugerido : ${usuarios}">
+				<div class="row mt-3" th:each="usuarioSugerido : ${sugerencias}">
 					<div class="col-auto pr-0">
 						<img th:src="${usuarioSugerido.imgPerfil.url}" class="img-sugeridos">
 					</div>
