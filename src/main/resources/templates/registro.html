@@ -34,18 +34,26 @@
 									name="apellido" placeholder="Apellido" required>
 							</div>
 							<div class="mb-3">
+							   <select class="form-select" id="genero" name="genero">
+								 	<option selected value="">-- Seleccione su género --</option>
+								 	<option value="Femenino">Femenino</option>
+								 	<option value="Masculino">Masculino</option>
+								 	<option value="Otro">Otro</option>
+								</select>
+							 </div>
+							<div class="mb-3">
 								<label for="fechaNacimiento"><strong>Fecha de nacimiento</strong></label>
 								<input type="date" class="form-control" id="fechaNacimiento"
 									name="fechaNacimiento" required>
 							</div>
 							<div class="mb-3">
 								<input type="text" class="form-control" id="username"
-									name="username" placeholder="Nombre de usuario" required>
+									name="username" placeholder="Nombre de usuario" required autocomplete="off">
 									<p th:if="${param.existe_u}" class="text-danger"><small>Existe una cuenta con el mismo nombre de usuario</small></p>
 							</div>
 							<div class="mb-3">
 								<input type="password" class="form-control" id="password"
-									name="password" placeholder="Contraseña" required>
+									name="password" placeholder="Contraseña" required autocomplete="off">
 							</div>
 							<p class="text-secondary">
 								<small> Al registrarte, aceptas nuestras Condiciones.

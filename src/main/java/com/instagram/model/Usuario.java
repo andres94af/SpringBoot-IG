@@ -43,14 +43,14 @@ public class Usuario {
 	private List<Seguidor> seguidores;
 	@OneToMany(mappedBy = "usuario")
 	private List<Seguido> seguidos;
+	private boolean perfilPublico;
 
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
-			String username, String password, Imagen imgPerfil, Autorizacion autorizacion,
+	public Usuario(String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
+			String username, String password, Imagen imgPerfil, Autorizacion autorizacion, boolean perfilPublico,
 			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos, String info2, String info1) {
-		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
@@ -65,6 +65,7 @@ public class Usuario {
 		this.seguidos = seguidos;
 		this.info1 = info1;
 		this.info2 = info2;
+		this.perfilPublico = perfilPublico;
 	}
 
 	public Integer getId() {
@@ -187,13 +188,18 @@ public class Usuario {
 		this.info2 = info2;
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaNacimiento="
-				+ fechaNacimiento + ", genero=" + genero + ", info1=" + info1 + ", info2=" + info2 + ", email=" + email
-				+ ", username=" + username + ", password=" + password + "]";
+	public boolean isPerfilPublico() {
+		return perfilPublico;
 	}
 
-	
+	public void setPerfilPublico(boolean perfilPublico) {
+		this.perfilPublico = perfilPublico;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombre=" + nombre + ", genero=" + genero + ", email=" + email + ", username="
+				+ username + ", perfilPublico=" + perfilPublico + "]";
+	}
 
 }
