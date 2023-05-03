@@ -83,14 +83,10 @@
 						<a th:if="${vista}==3" th:href="@{/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
 						<a th:unless="${vista}==3"th:href="@{/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
 					</div>
-					<div class="col-md-2" th:unless="${usuario==usuarioPerfil}">
-						<a th:if="${vista}==4" th:href="@{/}+${usuarioPerfil.username}+'/tagged'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-person-video"></i> <small>ETIQUETADAS</small></a>
-						<a th:unless="${vista}==4"th:href="@{/}+${usuarioPerfil.username}+'/tagged'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-person-video"></i> <small>ETIQUETADAS</small></a>
-					</div>
 				</div>
 		
 				<div class="row justify-content-start align-items-center">
-					<div class="col-md-4 p-1" th:each="publicacion : ${publicaciones}">
+					<div class="col-md-4 p-1" th:if="${perfilVisible}" th:each="publicacion : ${publicaciones}">
 						<a type="button" data-bs-toggle="modal" th:data-bs-target="'#modalPubli'+${publicacion.id}">
 							<img th:each="imagen : ${publicacion.imagenes}" th:src="${imagen.url}" class="img-fluid">
 						</a>
@@ -147,6 +143,9 @@
 						  </div>
 						</div>
 						<!-- FIN Modal -->
+					</div>
+					<div th:unless="${perfilVisible}" class="col-md-4 p-1">
+						<h3>El perfil es privado</h3>
 					</div>
 				</div>
 			</div>

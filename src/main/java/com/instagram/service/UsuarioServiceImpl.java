@@ -101,4 +101,18 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		return usuarios;
 	}
 
+	@Override
+	public boolean perfilVisible(Usuario usuarioLogueado, Usuario usuarioPerfil) {
+		List<Usuario> usuariosSeguidos = findAllSeguidos(usuarioLogueado);
+		if (usuarioPerfil.isPerfilPublico() || usuarioPerfil.equals(usuarioLogueado)) {
+			return true;
+		} else {
+			if (usuariosSeguidos.contains(usuarioPerfil))
+				return true;
+			else {
+				return false;
+			}
+		}
+	}
+
 }

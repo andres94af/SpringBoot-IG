@@ -41,18 +41,16 @@ public class HomeController {
 	// REDIRECCION AL INICIO SI SE ENCUENTRA LOGUEADO
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
-		Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		model.addAttribute("usuario", usuario);// usuario logueado
-		List<Usuario> usuariosHistorias = usuarioService.findAllSeguidos(usuario);
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
+		List<Usuario> usuariosHistorias = usuarioService.findAllSeguidos(usuarioLogueado.get());
+		List<Usuario> usuariosSugeridos = usuarioService.findAllNoSeguidos(usuarioLogueado.get());
+		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuarioLogueado.get());
+		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness <--------
+		model.addAttribute("usuario", usuarioLogueado.get());// usuario logueado
 		model.addAttribute("historias", usuariosHistorias);// usuarios seguidos, historias
-		List<Usuario> usuariosSugeridos = usuarioService.findAllNoSeguidos(usuario);
 		model.addAttribute("sugerencias", usuariosSugeridos);// usuarios NO seguidos sugerencias
-		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuario);
 		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo
-		
-		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
 		model.addAttribute("notificaciones", notificaciones);
-		
 		return "usuario/inicio";
 	}
 
@@ -98,23 +96,22 @@ public class HomeController {
 	// METODO QUE LLEVA A LA VISTA DE PERFIL/PUBLICACIONES DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/")
 	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username) {
-		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
 		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
+		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
 		if (!usuarioPerfil.isEmpty()) {
-			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuario", usuarioLogueado.get());
 			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
-			model.addAttribute("publicaciones", publicacionesDelPerfil);
-			
-			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("publicaciones", publicacionService.findByUsuario(usuarioPerfil.get()));
+			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
-			
 			model.addAttribute("vista", 1);
+
 			for (Seguidor s : seguidoresDelPerfil) {
-				if (s.getNombre().equals(usuarioLogueado)) {
+				if (s.getNombre().equals(usuarioLogueado.get())) {
 					model.addAttribute("seguido", true);
 					break;
 				}
@@ -128,24 +125,24 @@ public class HomeController {
 	// METODO QUE LLEVA A LA VISTA DE REELS DEL USUARIO SELECCIONADO
 	@GetMapping("/{username}/reels")
 	public String perfilConVistaEnReels(Model model, HttpSession session, @PathVariable String username) {
-		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
 		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
+		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+		publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
+		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
+		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
 		if (!usuarioPerfil.isEmpty()) {
-			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuario", usuarioLogueado.get());
 			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
-			publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
-			
-			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
-			
 			model.addAttribute("vista", 2);
+
 			for (Seguidor s : seguidoresDelPerfil) {
-				if (s.getNombre().equals(usuarioLogueado)) {
+				if (s.getNombre().equals(usuarioLogueado.get())) {
 					model.addAttribute("seguido", true);
 					break;
 				}
@@ -162,53 +159,20 @@ public class HomeController {
 	@GetMapping("/{username}/saved")
 	public String perfilConVistaEnPublicacionesGuardadas(Model model, HttpSession session,
 			@PathVariable String username) {
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		List<Publicacion> publicacionesGuardadas = new ArrayList<>();//metodo que devuelve lista de public guardadas
+		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
+		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
 		if (!usuarioPerfil.isEmpty()) {
-			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
 			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuario", usuarioLogueado.get());
 			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			// aqui la logica de publicaciones guardadas
-			model.addAttribute("publicaciones", publicacionesDelPerfil);
-			
-			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("publicaciones", publicacionesGuardadas);
+			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
-			
 			model.addAttribute("vista", 3);
-			return "usuario/perfil";
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	// METODO QUE LLEVA A LA VISTA DE PUBLICACIONES GUARDADAS DEL USUARIO
-	// SELECCIONADO <----FALTA TERMINAR
-	@GetMapping("/{username}/tagged")
-	public String perfilConVistaEnPublicacionesEtiquetado(Model model, HttpSession session,
-			@PathVariable String username) {
-		Usuario usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
-		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
-		if (!usuarioPerfil.isEmpty()) {
-			Usuario usuario = usuarioService.findById((Integer) session.getAttribute("idUsuario")).get();
-			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
-			// aqui la logica de publicaciones en las que me etiquetaron
-			model.addAttribute("publicaciones", publicacionesDelPerfil);
-			
-			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
-			model.addAttribute("notificaciones", notificaciones);
-			
-			model.addAttribute("vista", 4);
-			for (Seguidor s : seguidoresDelPerfil) {
-				if (s.getNombre().equals(usuarioLogueado)) {
-					model.addAttribute("seguido", true);
-					break;
-				}
-			}
 			return "usuario/perfil";
 		} else {
 			return "redirect:/";
