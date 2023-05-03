@@ -18,7 +18,7 @@ public class PublicacionesServiceImpl implements IPublicacionService {
 
 	@Autowired
 	IPublicacionRepository publicacionesRepo;
-	
+
 	@Autowired
 	IUsuarioService usuarioService;
 
@@ -69,7 +69,6 @@ public class PublicacionesServiceImpl implements IPublicacionService {
 			for (Publicacion p : publicaciones) {
 				if (p.getUsuario().equals(s)) {
 					publicacionesQueSigo.add(p);
-					System.out.println(p);
 				}
 			}
 		}

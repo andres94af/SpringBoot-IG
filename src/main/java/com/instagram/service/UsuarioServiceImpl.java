@@ -49,6 +49,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		imagenService.save(imagenDefault);
 		usuario.setAutorizacion(autorizacion);
 		usuario.setImgPerfil(imagenDefault);
+		usuario.setPerfilPublico(true);
 		return usuarioRepo.save(usuario);
 	}
 

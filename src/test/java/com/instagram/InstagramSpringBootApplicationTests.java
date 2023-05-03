@@ -24,35 +24,30 @@ import com.instagram.service.IUsuarioService;
 
 @SpringBootTest
 class InstagramSpringBootApplicationTests {
-	
+
 	@Autowired
 	IUsuarioService usuarioService;
-	
+
 	@Autowired
 	IAutorizacionService autorizacionService;
-	
+
 	@Autowired
 	IImagenService imagenService;
-	
+
 	@Autowired
 	IPublicacionService publicacionService;
-	
+
 	@Autowired
 	ISeguidoService seguidoService;
-	
+
 	@Autowired
 	ISeguidorService seguidorService;
 
 	@Test
 	void contextLoads() {
-		Usuario aleLogueada = usuarioService.findByUsername("aleFerreyra01").get();
-		Usuario andiVisitado = usuarioService.findByUsername("anndyfernandez").get();
-		Seguidor nuevoSeguidorParaAndy = new Seguidor(aleLogueada, andiVisitado);
-		Seguido nuevoUsuarioSeguidoPorAle = new Seguido(andiVisitado, aleLogueada);
-		seguidorService.save(nuevoSeguidorParaAndy);
-		seguidoService.save(nuevoUsuarioSeguidoPorAle);
-		System.out.println(nuevoSeguidorParaAndy);
-		System.out.println(nuevoUsuarioSeguidoPorAle);
+		Usuario usuario = usuarioService.findByUsername("anndyfernandez").get();
+		usuario.setPerfilPublico(true);
+		usuarioService.update(usuario);
 	}
 
 }

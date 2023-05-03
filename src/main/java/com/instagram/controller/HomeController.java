@@ -109,7 +109,6 @@ public class HomeController {
 			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
 			model.addAttribute("vista", 1);
-
 			for (Seguidor s : seguidoresDelPerfil) {
 				if (s.getNombre().equals(usuarioLogueado.get())) {
 					model.addAttribute("seguido", true);
@@ -140,7 +139,6 @@ public class HomeController {
 			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
 			model.addAttribute("vista", 2);
-
 			for (Seguidor s : seguidoresDelPerfil) {
 				if (s.getNombre().equals(usuarioLogueado.get())) {
 					model.addAttribute("seguido", true);
@@ -153,8 +151,7 @@ public class HomeController {
 		}
 	}
 
-	// METODO QUE LLEVA A LA VISTA DE PUBLICACIONES GUARDADAS POR EL USUARIO
-	// LOGUEADO
+	// METODO QUE LLEVA A LA VISTA DE PUBLIC. GUARDADAS POR EL USUARIO LOGUEADO
 	// <----FALTA TERMINAR
 	@GetMapping("/{username}/saved")
 	public String perfilConVistaEnPublicacionesGuardadas(Model model, HttpSession session,
