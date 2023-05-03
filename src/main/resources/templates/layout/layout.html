@@ -61,10 +61,10 @@
 							class="fs-4 bi bi-chat-text"></i><span
 							class="ms-1 d-none d-sm-inline">Mensajes</span></a>
 					</li>
-					<li class="nav-item"><a href="#"
-						class="nav-link align-middle px-0 link-dark"> <i
-							class="fs-4 bi bi-heart"></i><span
-							class="ms-1 d-none d-sm-inline">Notificaciones</span></a>
+					<li class="nav-item">
+						<a href="#" class="nav-link align-middle px-0 link-dark"> <i
+							class="fs-4 bi bi-heart"></i>
+							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${notificaciones.size()>0}" th:text="'-'+${notificaciones.size()}+'-'"></span></a>
 					</li>
 					<li class="nav-item">
 						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#nuevaPublicacion"> <i class="fs-4 bi bi-plus-square"></i><span class="ms-1 d-none d-sm-inline">Crear</span></button>

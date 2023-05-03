@@ -1,5 +1,6 @@
 package com.instagram.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,10 @@ public class HomeController {
 		model.addAttribute("sugerencias", usuariosSugeridos);// usuarios NO seguidos sugerencias
 		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuario);
 		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo
+		
+		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+		model.addAttribute("notificaciones", notificaciones);
+		
 		return "usuario/inicio";
 	}
 
@@ -103,6 +108,10 @@ public class HomeController {
 			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			
+			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("notificaciones", notificaciones);
+			
 			model.addAttribute("vista", 1);
 			for (Seguidor s : seguidoresDelPerfil) {
 				if (s.getNombre().equals(usuarioLogueado)) {
@@ -130,6 +139,10 @@ public class HomeController {
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			
+			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("notificaciones", notificaciones);
+			
 			model.addAttribute("vista", 2);
 			for (Seguidor s : seguidoresDelPerfil) {
 				if (s.getNombre().equals(usuarioLogueado)) {
@@ -158,6 +171,10 @@ public class HomeController {
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			// aqui la logica de publicaciones guardadas
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			
+			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("notificaciones", notificaciones);
+			
 			model.addAttribute("vista", 3);
 			return "usuario/perfil";
 		} else {
@@ -181,6 +198,10 @@ public class HomeController {
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			// aqui la logica de publicaciones en las que me etiquetaron
 			model.addAttribute("publicaciones", publicacionesDelPerfil);
+			
+			List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
+			model.addAttribute("notificaciones", notificaciones);
+			
 			model.addAttribute("vista", 4);
 			for (Seguidor s : seguidoresDelPerfil) {
 				if (s.getNombre().equals(usuarioLogueado)) {

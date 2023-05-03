@@ -63,11 +63,13 @@ public class PublicacionesServiceImpl implements IPublicacionService {
 	public List<Publicacion> publicacionesQueSigo(Usuario usuario) {
 		List<Publicacion> publicaciones = publicacionesRepo.findAll();
 		List<Usuario> seguidos = usuarioService.findAllSeguidos(usuario);
+		seguidos.add(usuario);
 		List<Publicacion> publicacionesQueSigo = new ArrayList<>();
-		for (Publicacion p : publicaciones) {
-			for (Usuario s : seguidos) {
-				if (p.getUsuario().equals(s) || p.getUsuario().equals(usuario)) {
+		for (Usuario s : seguidos) {
+			for (Publicacion p : publicaciones) {
+				if (p.getUsuario().equals(s)) {
 					publicacionesQueSigo.add(p);
+					System.out.println(p);
 				}
 			}
 		}

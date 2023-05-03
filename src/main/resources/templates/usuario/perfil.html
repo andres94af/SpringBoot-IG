@@ -11,6 +11,7 @@
 	<div class="container-fluid text center mt-2">
 		<div class="row justify-content-center">
 			<div class="col-md-7 espacio">
+				<!-- Alertas -->
 				<div th:if="${param.existe_u}" class="alert alert-danger alert-dismissible fade show" role="alert">
 				  Existe un usuario con el nombre solicitado, intenta con otro.
 				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -23,6 +24,7 @@
 				  Sus datos se modificaron con exito!
 				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
+				<!-- FIN Alertas -->
 				<div class="row align-items-center">
 					<div class="col-md-3 ms-5">
 						<img th:src="${usuarioPerfil.imgPerfil.url}" class="img-usuario-perfil">
@@ -33,15 +35,17 @@
 								<h5 class="m-0" th:text="${usuarioPerfil.username}"></h5>
 							</div>
 							<div class="col-md-auto" th:if="${usuario==usuarioPerfil}">
-								<button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#editarDatos">Editar perfil <i class="fs-5 bi bi-gear-wide"></i></button>
+								<button class="btn btn-light btn-sm btn-gris px-3" data-bs-toggle="modal" data-bs-target="#editarDatos">Editar perfil <i class="fs-6 bi bi-gear-wide"></i></button>
 							</div>
 							<div class="col-md-auto" th:unless="${usuario==usuarioPerfil}">
-								<div class="dropdown">
-								  <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-person"></i></button>
+								<a class="btn btn-primary btn-azul btn-sm px-3" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}">Seguir</a>
+								<div class="dropdown" th:if="${seguido}">
+								  <button class="btn-sm btn btn-light dropdown-toggle btn-gris px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">Siguiendo</button>
 								  <ul class="dropdown-menu">
-								    <li><a class="dropdown-item" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}"><i class="bi bi-check"></i> Seguir</a></li>
-								    <li><a class="dropdown-item" th:if="${seguido}" th:href="@{/cuenta/dejarDeSeguir/}+${usuarioPerfil.id}"><i class="bi bi-x"></i> Dejar de seguir</a></li>
+								  	<li><a class="dropdown-item" href="#">Silenciar</a></li>
+								    <li><a class="dropdown-item" th:href="@{/cuenta/dejarDeSeguir/}+${usuarioPerfil.id}">Dejar de seguir</a></li>
 								  </ul>
+								  <button class="btn-sm btn btn-light btn-gris px-3" type="button">Enviar mensaje</button>
 								</div>
 							</div>
 						</div>

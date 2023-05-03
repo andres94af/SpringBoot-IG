@@ -70,3 +70,20 @@
 	height: 2.5rem;
 	border-radius: 50%;
 }
+
+#nro-notificacion{
+	font-size: 0.8rem;
+	background: red;
+	border-radius: 50%;
+	color: white;
+}
+
+.btn-azul{
+	background-color: #0095F6;
+	color: white;
+}
+
+.btn-gris{
+	background-color: #EFEFEF;
+	font-weight: 500;
+}
