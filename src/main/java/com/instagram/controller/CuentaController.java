@@ -26,7 +26,6 @@ import com.instagram.model.Publicacion;
 import com.instagram.model.Seguido;
 import com.instagram.model.Seguidor;
 import com.instagram.model.Usuario;
-import com.instagram.service.CloudinarySevice;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IComentarioService;
 import com.instagram.service.IImagenService;
@@ -35,6 +34,7 @@ import com.instagram.service.IPublicacionService;
 import com.instagram.service.ISeguidoService;
 import com.instagram.service.ISeguidorService;
 import com.instagram.service.IUsuarioService;
+import com.instagram.service.cloudinary.CloudinarySevice;
 
 import jakarta.servlet.http.HttpSession;
 

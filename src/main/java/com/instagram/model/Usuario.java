@@ -44,13 +44,16 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Seguido> seguidos;
 	private boolean perfilPublico;
+	@OneToMany(mappedBy = "destinatario")
+	private List<Notificacion> notificaciones;
 
 	public Usuario() {
 	}
 
 	public Usuario(String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
 			String username, String password, Imagen imgPerfil, Autorizacion autorizacion, boolean perfilPublico,
-			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos, String info2, String info1) {
+			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos, String info2,
+			String info1, List<Notificacion> notificaciones) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
@@ -66,6 +69,7 @@ public class Usuario {
 		this.info1 = info1;
 		this.info2 = info2;
 		this.perfilPublico = perfilPublico;
+		this.notificaciones = notificaciones;
 	}
 
 	public Integer getId() {
@@ -194,6 +198,14 @@ public class Usuario {
 
 	public void setPerfilPublico(boolean perfilPublico) {
 		this.perfilPublico = perfilPublico;
+	}
+
+	public List<Notificacion> getNotificaciones() {
+		return notificaciones;
+	}
+
+	public void setNotificaciones(List<Notificacion> notificaciones) {
+		this.notificaciones = notificaciones;
 	}
 
 	@Override

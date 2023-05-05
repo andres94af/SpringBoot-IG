@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.cloudinary;
 
 import java.io.File;
 import java.io.FileOutputStream;
