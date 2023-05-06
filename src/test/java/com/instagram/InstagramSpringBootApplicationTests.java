@@ -11,12 +11,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.instagram.model.Autorizacion;
 import com.instagram.model.Imagen;
+import com.instagram.model.Notificacion;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Seguido;
 import com.instagram.model.Seguidor;
+import com.instagram.model.TipoDeNotificacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IImagenService;
+import com.instagram.service.INotificacionService;
 import com.instagram.service.IPublicacionService;
 import com.instagram.service.ISeguidoService;
 import com.instagram.service.ISeguidorService;
@@ -42,12 +45,16 @@ class InstagramSpringBootApplicationTests {
 
 	@Autowired
 	ISeguidorService seguidorService;
+	
+	@Autowired
+	INotificacionService notificacionService;
 
 	@Test
 	void contextLoads() {
-		Usuario usuario = usuarioService.findByUsername("anndyfernandez").get();
-		usuario.setPerfilPublico(true);
-		usuarioService.update(usuario);
+		Usuario emisor = usuarioService.findByUsername("KatCF").get();
+		Usuario destinatario = usuarioService.findByUsername("anndyfernandez").get();
+		Notificacion notificacion = new Notificacion(emisor, TipoDeNotificacion.LIKE, LocalDate.now(), destinatario, false);
+		notificacionService.save(notificacion);
 	}
 
 }

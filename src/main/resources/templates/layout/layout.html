@@ -64,13 +64,13 @@
 					<li class="nav-item">
 						<a href="#" class="nav-link align-middle px-0 link-dark"> <i
 							class="fs-4 bi bi-heart"></i>
-							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${notificaciones.size()>0}" th:text="'-'+${notificaciones.size()}+'-'"></span></a>
+							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${usuarioLogueado.notificaciones.size()>0}" th:text="'-'+${usuarioLogueado.notificaciones.size()}+'-'"></span></a>
 					</li>
 					<li class="nav-item">
 						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#nuevaPublicacion"> <i class="fs-4 bi bi-plus-square"></i><span class="ms-1 d-none d-sm-inline">Crear</span></button>
 					</li>
-					<li class="nav-item"><a th:href="@{/}+${usuario.username}+'/'" class="nav-link align-middle px-0 link-dark">
-						<img th:src="${usuario.imgPerfil.url}" class="img-perfil-nav">
+					<li class="nav-item"><a th:href="@{/perfil/}+${usuarioLogueado.username}+'/p'" class="nav-link align-middle px-0 link-dark">
+						<img th:src="${usuarioLogueado.imgPerfil.url}" class="img-perfil-nav">
 						<span class="ms-1 d-none d-sm-inline">Perfil</span></a>
 					</li>
 				</ul>

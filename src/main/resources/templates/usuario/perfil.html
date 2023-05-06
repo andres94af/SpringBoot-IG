@@ -34,10 +34,10 @@
 							<div class="col-md-auto">
 								<h5 class="m-0" th:text="${usuarioPerfil.username}"></h5>
 							</div>
-							<div class="col-md-auto" th:if="${usuario==usuarioPerfil}">
+							<div class="col-md-auto" th:if="${usuarioLogueado==usuarioPerfil}">
 								<button class="btn btn-light btn-sm btn-gris px-3" data-bs-toggle="modal" data-bs-target="#editarDatos">Editar perfil <i class="fs-6 bi bi-gear-wide"></i></button>
 							</div>
-							<div class="col-md-auto" th:unless="${usuario==usuarioPerfil}">
+							<div class="col-md-auto" th:unless="${usuarioLogueado==usuarioPerfil}">
 								<a class="btn btn-primary btn-azul btn-sm px-3" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}">Seguir</a>
 								<div class="dropdown" th:if="${seguido}">
 								  <button class="btn-sm btn btn-light dropdown-toggle btn-gris px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">Siguiendo</button>
@@ -72,16 +72,16 @@
 
 				<div class="row justify-content-center text-center mt-3 border-top border-secondary">
 					<div class="col-md-2">
-						<a th:if="${vista}==1" th:href="@{/}+${usuarioPerfil.username}+'/'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-table"></i> <small>PUBLICACIONES</small></a>
-						<a th:unless="${vista}==1" th:href="@{/}+${usuarioPerfil.username}+'/'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-table"></i> <small>PUBLICACIONES</small></a>
+						<a th:if="${vista}==1" th:href="@{/perfil/}+${usuarioPerfil.username}+'/p'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-table"></i> <small>PUBLICACIONES</small></a>
+						<a th:unless="${vista}==1" th:href="@{/perfil/}+${usuarioPerfil.username}+'/p'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-table"></i> <small>PUBLICACIONES</small></a>
 					</div>
 					<div class="col-md-2">
-						<a th:if="${vista}==2" th:href="@{/}+${usuarioPerfil.username}+'/reels'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-camera-reels"></i> <small>REELS</small></a>
-						<a th:unless="${vista}==2"th:href="@{/}+${usuarioPerfil.username}+'/reels'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-camera-reels"></i> <small>REELS</small></a>
+						<a th:if="${vista}==2" th:href="@{/perfil/}+${usuarioPerfil.username}+'/reels'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-camera-reels"></i> <small>REELS</small></a>
+						<a th:unless="${vista}==2" th:href="@{/perfil/}+${usuarioPerfil.username}+'/reels'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-camera-reels"></i> <small>REELS</small></a>
 					</div>
-					<div class="col-md-2" th:if="${usuario==usuarioPerfil}">
-						<a th:if="${vista}==3" th:href="@{/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
-						<a th:unless="${vista}==3"th:href="@{/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
+					<div class="col-md-2" th:if="${usuarioLogueado==usuarioPerfil}">
+						<a th:if="${vista}==3" th:href="@{/perfil/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-offset-3 link-underline link-underline-opacity-0 border-top border-2 border-secondary"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
+						<a th:unless="${vista}==3" th:href="@{/perfil/}+${usuarioPerfil.username}+'/saved'" class="link-secondary link-underline link-underline-opacity-0 link-offset-3"><i class="bi bi-bookmark"></i> <small>GUARDADO</small></a>
 					</div>
 				</div>
 		
@@ -106,7 +106,7 @@
 											    </div>
 												<div>
 													<p class="card-title mb-1">
-														<a th:href="@{/}+${publicacion.usuario.username}+'/'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0 fw-bold"></a> <span th:text="${publicacion.titulo}"></span>
+														<a th:href="@{/perfil/}+${publicacion.usuario.username}+'/p'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0 fw-bold"></a> <span th:text="${publicacion.titulo}"></span>
 													</p>
 												</div>
 												<div th:each="comentario : ${publicacion.comentarios}">
@@ -127,7 +127,7 @@
 														<button type="submit" class="btn-like" th:if="${publicacion.likes.size()}==0">
 															<i class="fs-4 bi bi-suit-heart text-dark"></i>
 														</button>
-														<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuario.id)}">
+														<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuarioLogueado.id)}">
 															<i th:if="${tieneLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
 															<i th:unless="${tieneLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
 														</button>

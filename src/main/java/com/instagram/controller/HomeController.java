@@ -1,6 +1,5 @@
 package com.instagram.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.instagram.model.Notificacion;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Seguidor;
 import com.instagram.model.TipoDePublicacion;
@@ -19,7 +19,6 @@ import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
 import com.instagram.service.IPublicacionService;
 import com.instagram.service.IUsuarioService;
-
 import jakarta.servlet.http.HttpSession;
 
 //CONTROLADOR QUE REDIRECCIONA A LAS VISTAS Y CARGA CONTENIDO
@@ -45,13 +44,58 @@ public class HomeController {
 		List<Usuario> usuariosHistorias = usuarioService.findAllSeguidos(usuarioLogueado.get());
 		List<Usuario> usuariosSugeridos = usuarioService.findAllNoSeguidos(usuarioLogueado.get());
 		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuarioLogueado.get());
-		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness <--------
-		model.addAttribute("usuario", usuarioLogueado.get());// usuario logueado
-		model.addAttribute("historias", usuariosHistorias);// usuarios seguidos, historias
-		model.addAttribute("sugerencias", usuariosSugeridos);// usuarios NO seguidos sugerencias
-		model.addAttribute("publicaciones", publicaciones);// public de gente que sigo
+		List<Notificacion> notificaciones = usuarioLogueado.get().getNotificaciones();
+		notificaciones.removeIf(n -> n.isRecibida());
+		model.addAttribute("usuarioLogueado", usuarioLogueado.get());
+		model.addAttribute("historias", usuariosHistorias);
+		model.addAttribute("sugerencias", usuariosSugeridos);
+		model.addAttribute("publicaciones", publicaciones);
 		model.addAttribute("notificaciones", notificaciones);
 		return "usuario/inicio";
+	}
+
+	// METODO QUE LLEVA A LA VISTA DE PERFIL DEL USUARIO SELECCIONADO
+	@GetMapping("/perfil/{username}/{vista}")
+	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username,
+			@PathVariable String vista) {
+		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
+		if (!usuarioPerfil.isEmpty()) {
+			Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
+			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
+			List<Notificacion> notificaciones = usuarioLogueado.get().getNotificaciones();
+			notificaciones.removeIf(n -> n.isRecibida());
+			boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
+			model.addAttribute("title", " @" + username);
+			model.addAttribute("usuarioLogueado", usuarioLogueado.get());
+			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
+			switch (vista) {
+			case "reels":
+				publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
+				model.addAttribute("publicaciones", publicacionesDelPerfil);
+				model.addAttribute("vista", 2);
+				break;
+			case "saved":
+				// AQUI EL FILTRO PARA PUBLIC GUARDADAS
+				model.addAttribute("publicaciones", publicacionesDelPerfil);
+				model.addAttribute("vista", 3);
+				break;
+			default:
+				model.addAttribute("publicaciones", publicacionesDelPerfil);
+				model.addAttribute("vista", 1);
+				break;
+			}
+			model.addAttribute("perfilVisible", perfilVisible);
+			model.addAttribute("notificaciones", notificaciones);
+			for (Seguidor s : usuarioPerfil.get().getSeguidores()) {
+				if (s.getNombre().equals(usuarioLogueado.get())) {
+					model.addAttribute("seguido", true);
+					break;
+				}
+			}
+			return "usuario/perfil";
+		} else {
+			return "redirect:/";
+		}
 	}
 
 	// REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
@@ -71,12 +115,6 @@ public class HomeController {
 		return "registro";
 	}
 
-	// METODO QUE INICIA SESION
-	@GetMapping("/iniciarSesion")
-	public String iniciarSesion() {
-		return "redirect:/";
-	}
-
 	// METODO QUE REGISTRA NUEVO USUARIO EN BBDD
 	@GetMapping("/generarCuenta")
 	public String guardarNuevaCuenta(Usuario usuario) {
@@ -93,87 +131,10 @@ public class HomeController {
 		}
 	}
 
-	// METODO QUE LLEVA A LA VISTA DE PERFIL/PUBLICACIONES DEL USUARIO SELECCIONADO
-	@GetMapping("/{username}/")
-	public String perfilConVistaEnPublicaciones(Model model, HttpSession session, @PathVariable String username) {
-		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
-		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
-		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
-		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
-		if (!usuarioPerfil.isEmpty()) {
-			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuarioLogueado.get());
-			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			model.addAttribute("publicaciones", publicacionService.findByUsuario(usuarioPerfil.get()));
-			model.addAttribute("perfilVisible", perfilVisible);
-			model.addAttribute("notificaciones", notificaciones);
-			model.addAttribute("vista", 1);
-			for (Seguidor s : seguidoresDelPerfil) {
-				if (s.getNombre().equals(usuarioLogueado.get())) {
-					model.addAttribute("seguido", true);
-					break;
-				}
-			}
-			return "usuario/perfil";
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	// METODO QUE LLEVA A LA VISTA DE REELS DEL USUARIO SELECCIONADO
-	@GetMapping("/{username}/reels")
-	public String perfilConVistaEnReels(Model model, HttpSession session, @PathVariable String username) {
-		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
-		List<Seguidor> seguidoresDelPerfil = usuarioPerfil.get().getSeguidores();
-		List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
-		publicacionesDelPerfil.removeIf(p -> p.getTipo().equals(TipoDePublicacion.PUBLICACION));
-		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
-		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
-		if (!usuarioPerfil.isEmpty()) {
-			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuarioLogueado.get());
-			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			model.addAttribute("publicaciones", publicacionesDelPerfil);
-			model.addAttribute("perfilVisible", perfilVisible);
-			model.addAttribute("notificaciones", notificaciones);
-			model.addAttribute("vista", 2);
-			for (Seguidor s : seguidoresDelPerfil) {
-				if (s.getNombre().equals(usuarioLogueado.get())) {
-					model.addAttribute("seguido", true);
-					break;
-				}
-			}
-			return "usuario/perfil";
-		} else {
-			return "redirect:/";
-		}
-	}
-
-	// METODO QUE LLEVA A LA VISTA DE PUBLIC. GUARDADAS POR EL USUARIO LOGUEADO
-	// <----FALTA TERMINAR
-	@GetMapping("/{username}/saved")
-	public String perfilConVistaEnPublicacionesGuardadas(Model model, HttpSession session,
-			@PathVariable String username) {
-		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		Optional<Usuario> usuarioPerfil = usuarioService.findByUsername(username);
-		List<Publicacion> publicacionesGuardadas = new ArrayList<>();//metodo que devuelve lista de public guardadas
-		boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
-		List<String> notificaciones = new ArrayList<>();// crear entidad de notificacioness
-		if (!usuarioPerfil.isEmpty()) {
-			model.addAttribute("title", " @" + username);
-			model.addAttribute("usuario", usuarioLogueado.get());
-			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
-			// aqui la logica de publicaciones guardadas
-			model.addAttribute("publicaciones", publicacionesGuardadas);
-			model.addAttribute("perfilVisible", perfilVisible);
-			model.addAttribute("notificaciones", notificaciones);
-			model.addAttribute("vista", 3);
-			return "usuario/perfil";
-		} else {
-			return "redirect:/";
-		}
+	// METODO QUE INICIA SESION
+	@GetMapping("/iniciarSesion")
+	public String iniciarSesion() {
+		return "redirect:/";
 	}
 
 }

@@ -13,12 +13,12 @@
 			<div class="col-md-4">
 				<div class="row mb-2">
 					<div class="col text-center col-historia">
-						<img th:src="${usuario.imgPerfil.url}" class="img-historia">
-						<p class="text-truncate"><small><a th:href="@{/}+${usuario.username}+'/'" th:text="${usuario.username}" class="link-dark link-underline-opacity-0"></a></small></p>
+						<img th:src="${usuarioLogueado.imgPerfil.url}" class="img-historia">
+						<p class="text-truncate"><small><a th:href="@{/perfil/}+${usuarioLogueado.username}+'/p'" th:text="${usuarioLogueado.username}" class="link-dark link-underline-opacity-0"></a></small></p>
 					</div>
 					<div class="col text-center col-historia" th:each="user : ${historias}">
 						<img th:src="${user.imgPerfil.url}" class="img-historia">
-						<p class="text-truncate"><small><a th:href="@{/}+${user.username}+'/'" th:text="${user.username}" class="link-dark link-underline-opacity-0"></a></small></p>
+						<p class="text-truncate"><small><a th:href="@{/perfil/}+${user.username}+'/p'" th:text="${user.username}" class="link-dark link-underline-opacity-0"></a></small></p>
 					</div>
 				</div>
 				<div class="border-bottom mb-3" th:each="publicacion : ${publicaciones}">
@@ -28,7 +28,7 @@
 								<img th:src="${publicacion.usuario.imgPerfil.url}" class="img-perfil-publi">
 							</div>
 							<div class="col">
-								<h6 class="card-title"><a th:href="@{/}+${publicacion.usuario.username}+'/'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0"></a></h6>
+								<h6 class="card-title"><a th:href="@{/perfil/}+${publicacion.usuario.username}+'/p'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0"></a></h6>
 								<p class="card-text text-secondary" th:text="${publicacion.ubicacion}"></p>
 							</div>
 						</div>
@@ -41,7 +41,7 @@
 							<button type="submit" class="btn-like" th:if="${publicacion.likes.size()}==0">
 								<i class="fs-4 bi bi-suit-heart text-dark"></i>
 							</button>
-							<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuario.id)}">
+							<button type="submit" class="btn-like" th:unless="${publicacion.likes.size()}==0" th:with="tieneLike=${#lists.contains(publicacion.likes.![usuario.id], usuarioLogueado.id)}">
 								<i th:if="${tieneLike}" class="fs-4 bi bi-suit-heart-fill text-danger"></i>
 								<i th:unless="${tieneLike}" class="fs-4 bi bi-suit-heart text-dark"></i>
 							</button>
@@ -54,7 +54,7 @@
 					</div>
 					<div>
 						<p class="card-title mb-1">
-							<a th:href="@{/}+${publicacion.usuario.username}+'/'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0 fw-bold"></a> <span th:text="${publicacion.titulo}"></span>
+							<a th:href="@{/perfil/}+${publicacion.usuario.username}+'/p'" th:text="${publicacion.usuario.username}" class="link-dark link-underline-opacity-0 fw-bold"></a> <span th:text="${publicacion.titulo}"></span>
 						</p>
 					</div>
 					<div th:each="comentario : ${publicacion.comentarios}">
@@ -70,11 +70,11 @@
 			<div class="col-md-4 ms-5">
 				<div class="row">
 					<div class="col-auto pr-0">
-						<img th:src="${usuario.imgPerfil.url}" class="img-historia">
+						<img th:src="${usuarioLogueado.imgPerfil.url}" class="img-historia">
 					</div>
 					<div class="col">
-						<h6 class="card-title"><a th:href="@{/}+${usuario.username}+'/'" th:text="${usuario.username}" class="link-dark link-underline-opacity-0"></a></h6>
-						<p class="card-text text-secondary" th:text="${usuario.nombre}+' '+${usuario.apellido}"></p>
+						<h6 class="card-title"><a th:href="@{/perfil/}+${usuarioLogueado.username}+'/p'" th:text="${usuarioLogueado.username}" class="link-dark link-underline-opacity-0"></a></h6>
+						<p class="card-text text-secondary" th:text="${usuarioLogueado.nombre}+' '+${usuarioLogueado.apellido}"></p>
 					</div>
 				</div>
 				<div class="row mt-4">
@@ -85,7 +85,7 @@
 						<img th:src="${usuarioSugerido.imgPerfil.url}" class="img-sugeridos">
 					</div>
 					<div class="col">
-						<h6 class="card-title"><a th:href="@{/}+${usuarioSugerido.username}+'/'" th:text="${usuarioSugerido.username}" class="link-dark link-underline-opacity-0"></a></h6>
+						<h6 class="card-title"><a th:href="@{/perfil/}+${usuarioSugerido.username}+'/p'" th:text="${usuarioSugerido.username}" class="link-dark link-underline-opacity-0"></a></h6>
 						<p class="card-text text-secondary" th:text="${usuarioSugerido.nombre}+' '+${usuarioSugerido.apellido}"></p>
 					</div>
 				</div>

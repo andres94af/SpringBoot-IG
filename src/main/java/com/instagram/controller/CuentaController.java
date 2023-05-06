@@ -141,7 +141,7 @@ public class CuentaController {
 		imagenService.deleteById(imgPerfilAct.getId());
 		if (!imgPerfilAct.getImgId().equals("hlqmcwbljw9ymsfopwkn"))
 			cloudinarySevice.delete(imgPerfilAct.getImgId());
-		return "redirect:/" + usuarioLogueado.get().getUsername() + "/";
+		return "redirect:/perfil/" + usuarioLogueado.get().getUsername() + "/p";
 	}
 
 	@PostMapping("/actualizarDatos")
@@ -155,7 +155,7 @@ public class CuentaController {
 		usuarios.removeIf(u -> u.getUsername().equals(usuario.get().getUsername()));
 		for (Usuario u : usuarios) {
 			if (u.getUsername().equals(username))
-				return "redirect:/" + usuario.get().getUsername() + "/?existe_u";
+				return "redirect:/perfil/" + usuario.get().getUsername() + "/p?existe_u";
 		}
 		usuario.get().setUsername(username);
 		usuario.get().setInfo1(info1);
@@ -167,7 +167,7 @@ public class CuentaController {
 		}
 		usuarioService.update(usuario.get());
 		System.out.println(usuario);
-		return "redirect:/" + usuario.get().getUsername() + "/?act_e";
+		return "redirect:/perfil/" + usuario.get().getUsername() + "/p?act_e";
 	}
 
 	@GetMapping("/seguir/{id}")
@@ -180,7 +180,7 @@ public class CuentaController {
 			seguidorService.save(logueadoSigueAVisitado);
 			seguidoService.save(visitadoEsSeguidoPorLogueado);
 		}
-		return "redirect:/" + usuarioVisitado.get().getUsername() + "/";
+		return "redirect:/perfil/" + usuarioVisitado.get().getUsername() + "/p";
 	}
 
 	@GetMapping("/dejarDeSeguir/{id}")
@@ -203,7 +203,7 @@ public class CuentaController {
 				}
 			}
 		}
-		return "redirect:/" + usuarioVisitado.get().getUsername() + "/";
+		return "redirect:/perfil/" + usuarioVisitado.get().getUsername() + "/p";
 	}
 
 }
