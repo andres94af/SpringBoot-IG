@@ -51,9 +51,8 @@ class InstagramSpringBootApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Usuario emisor = usuarioService.findByUsername("KatCF").get();
-		Usuario destinatario = usuarioService.findByUsername("anndyfernandez").get();
-		Notificacion notificacion = new Notificacion(emisor, TipoDeNotificacion.LIKE, LocalDate.now(), destinatario, false);
+		Notificacion notificacion = notificacionService.findById(3).get();
+		notificacion.setRecibida(true);
 		notificacionService.save(notificacion);
 	}
 

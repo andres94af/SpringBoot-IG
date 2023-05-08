@@ -90,8 +90,8 @@ public class CuentaController {
 			Comentario nuevoComentario = new Comentario(usuarioLogueado.get(), LocalDate.now(), comentario,
 					publicacion);
 			if (!usuarioLogueado.get().equals(publicacion.getUsuario())) {
-				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.LIKE,
-						LocalDate.now(), publicacion.getUsuario(), false);
+				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.COMENTARIO,
+						LocalDate.now(), publicacion.getUsuario(), false, publicacion);
 				notificacionService.save(notificacion);
 			}
 			comentarioService.save(nuevoComentario);
@@ -115,7 +115,7 @@ public class CuentaController {
 		}
 		if (!usuarioLogueado.get().equals(publicacion.getUsuario())) {
 			Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.LIKE,
-					LocalDate.now(), publicacion.getUsuario(), false);
+					LocalDate.now(), publicacion.getUsuario(), false, publicacion);
 			notificacionService.save(notificacion);
 		}
 		likeService.save(like);
@@ -225,6 +225,20 @@ public class CuentaController {
 			}
 		}
 		return "redirect:/perfil/" + usuarioVisitado.get().getUsername() + "/p";
+	}
+	
+	@GetMapping("/notificacionVista/{idNotificacion}/{idPublicacion}")
+	public String notificacionVista(@PathVariable("idNotificacion") Integer idNotificacion, @PathVariable("idPublicacion") Integer idPublicacion) {
+		Optional<Notificacion> n = notificacionService.findById(idNotificacion);
+		Optional<Publicacion> p = publicacionService.findById(idPublicacion);
+		if (n.isPresent() && p.isPresent()) {
+			n.get().setRecibida(true);
+			notificacionService.update(n.get());
+			return "redirect:/#post" + idPublicacion;
+		}
+		System.out.println("El id de la notificacion es: " + idNotificacion);
+		System.out.println("El id de la publicacion es: " + idPublicacion);
+		return "redirect:/";
 	}
 
 }

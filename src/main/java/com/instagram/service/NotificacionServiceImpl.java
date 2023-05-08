@@ -1,6 +1,8 @@
 package com.instagram.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.instagram.model.Notificacion;
@@ -25,6 +27,11 @@ public class NotificacionServiceImpl implements INotificacionService {
 	@Override
 	public List<Notificacion> findAll() {
 		return notificacionRepo.findAll();
+	}
+
+	@Override
+	public Optional<Notificacion> findById(Integer id) {
+		return notificacionRepo.findById(id);
 	}
 
 }

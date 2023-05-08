@@ -1,6 +1,8 @@
 package com.instagram.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import com.instagram.model.Notificacion;
 
 public interface INotificacionService {
@@ -9,4 +11,6 @@ public interface INotificacionService {
 	void update(Notificacion notificacion);
 
 	List<Notificacion> findAll();
+	
+	Optional<Notificacion> findById(Integer id);
 }

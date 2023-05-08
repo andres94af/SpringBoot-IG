@@ -21,6 +21,9 @@ public class Notificacion {
 	private Usuario emisor;
 
 	private TipoDeNotificacion tipo;
+	
+	@ManyToOne
+	private Publicacion publicacion;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fecha;
@@ -33,6 +36,16 @@ public class Notificacion {
 	public Notificacion() {
 	}
 
+	public Notificacion(Usuario emisor, TipoDeNotificacion tipo, LocalDate fecha, Usuario destinatario,
+			boolean recibida, Publicacion publicacion) {
+		this.emisor = emisor;
+		this.tipo = tipo;
+		this.fecha = fecha;
+		this.destinatario = destinatario;
+		this.recibida = recibida;
+		this.publicacion = publicacion;
+	}
+	
 	public Notificacion(Usuario emisor, TipoDeNotificacion tipo, LocalDate fecha, Usuario destinatario,
 			boolean recibida) {
 		this.emisor = emisor;
@@ -88,6 +101,15 @@ public class Notificacion {
 
 	public void setRecibida(boolean recibida) {
 		this.recibida = recibida;
+	}
+	
+
+	public Publicacion getPublicacion() {
+		return publicacion;
+	}
+
+	public void setPublicacion(Publicacion publicacion) {
+		this.publicacion = publicacion;
 	}
 
 	@Override

@@ -62,9 +62,9 @@
 							class="ms-1 d-none d-sm-inline">Mensajes</span></a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link align-middle px-0 link-dark"> <i
+						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#notificaciones"> <i
 							class="fs-4 bi bi-heart"></i>
-							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${usuarioLogueado.notificaciones.size()>0}" th:text="'-'+${usuarioLogueado.notificaciones.size()}+'-'"></span></a>
+							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${usuarioLogueado.notificaciones.size()>0}" th:text="'-'+${usuarioLogueado.notificaciones.size()}+'-'"></span></button>
 					</li>
 					<li class="nav-item">
 						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#nuevaPublicacion"> <i class="fs-4 bi bi-plus-square"></i><span class="ms-1 d-none d-sm-inline">Crear</span></button>
@@ -92,7 +92,7 @@
 		</div>
 		
 		<!-- Modal crear publicacion -->
-		<div class="modal fade" id="nuevaPublicacion" tabindex="-1" aria-hidden="true" aria-labelledby="exampleModalLabel">
+		<div class="modal fade" id="nuevaPublicacion" tabindex="-1" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-centered">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -139,6 +139,28 @@
 		  </div>
 		</div>
 		<!-- FIN Modal crear publicacion -->
+		
+		<!-- Modal crear publicacion -->
+		<div class="modal fade" id="notificaciones" tabindex="-1" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5">Notificaciones</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      	<table class="table table-hover">
+				  <tbody>
+				    <tr th:each="notificacion : ${notificaciones}">
+				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).LIKE}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}+'/'+${notificacion.publicacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> le dio like a tu publicación</a></td>
+				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).COMENTARIO}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}+'/'+${notificacion.publicacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> ha comentado tu publicación</a></td>
+				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SOLICITUD}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> te envio una solicitud de seguimiento</a></td>		      
+				    </tr>
+				</table>
+		      </div>
+		    </div>
+		  </div>
+		<!-- FIN Modal crear publicacion -->
+		
 	</div>
 	<!-- FIN Fragmento Header -->
 
