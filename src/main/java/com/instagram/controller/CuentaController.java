@@ -22,14 +22,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.instagram.model.Comentario;
 import com.instagram.model.Imagen;
 import com.instagram.model.Like;
+import com.instagram.model.Notificacion;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Seguido;
 import com.instagram.model.Seguidor;
+import com.instagram.model.TipoDeNotificacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IAutorizacionService;
 import com.instagram.service.IComentarioService;
 import com.instagram.service.IImagenService;
 import com.instagram.service.ILikeService;
+import com.instagram.service.INotificacionService;
 import com.instagram.service.IPublicacionService;
 import com.instagram.service.ISeguidoService;
 import com.instagram.service.ISeguidorService;
@@ -73,6 +76,9 @@ public class CuentaController {
 	@Autowired
 	ISeguidorService seguidorService;
 
+	@Autowired
+	INotificacionService notificacionService;
+
 	// METOGO QUE AGREGA UN COMENTARIO A UNA PUBLICACION
 	@PostMapping("/agregarComentario/{id}")
 	public String agragarComentario(@RequestParam String comentario, @PathVariable Integer id, HttpSession session) {
@@ -83,6 +89,11 @@ public class CuentaController {
 			Publicacion publicacion = publicacionService.findById(id).get();
 			Comentario nuevoComentario = new Comentario(usuarioLogueado.get(), LocalDate.now(), comentario,
 					publicacion);
+			if (!usuarioLogueado.get().equals(publicacion.getUsuario())) {
+				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.LIKE,
+						LocalDate.now(), publicacion.getUsuario(), false);
+				notificacionService.save(notificacion);
+			}
 			comentarioService.save(nuevoComentario);
 			return "redirect:/#post" + id;
 		}
@@ -102,13 +113,18 @@ public class CuentaController {
 				return "redirect:/#post" + id;
 			}
 		}
+		if (!usuarioLogueado.get().equals(publicacion.getUsuario())) {
+			Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.LIKE,
+					LocalDate.now(), publicacion.getUsuario(), false);
+			notificacionService.save(notificacion);
+		}
 		likeService.save(like);
 		return "redirect:/#post" + id;
 	}
 
 	@PostMapping("/crearPublicacion")
 	public String crearNuevaPublicacion(HttpSession session, Publicacion publicacion,
-			@RequestParam("img") MultipartFile file) throws IOException {
+			@RequestParam("img") MultipartFile file, @RequestParam("efecto") String efecto) throws IOException {
 		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		publicacion.setUsuario(usuarioLogueado.get());
 		publicacion.setFechaCreacion(LocalDate.now());
@@ -116,8 +132,7 @@ public class CuentaController {
 		BufferedImage bi = ImageIO.read(file.getInputStream());
 		if (bi == null)
 			return "redirect:/?img_error";
-		Map result = cloudinarySevice.upload(file, "", "instagram/img_publicacion");// <------------------FALTA AGREGAR
-																					// EFECTO
+		Map result = cloudinarySevice.upload(file, efecto, "instagram/img_publicacion");
 		Imagen imagenPublicacion = new Imagen((String) result.get("url"), (String) result.get("public_id"),
 				usuarioLogueado.get(), publicacion);
 		imagenService.save(imagenPublicacion);
@@ -173,14 +188,20 @@ public class CuentaController {
 	@GetMapping("/seguir/{id}")
 	public String seguir(HttpSession session, @PathVariable("id") Integer id) {
 		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
-		Optional<Usuario> usuarioVisitado = usuarioService.findById(id);
-		if (usuarioLogueado.isPresent() && usuarioVisitado.isPresent()) {
-			Seguidor logueadoSigueAVisitado = new Seguidor(usuarioLogueado.get(), usuarioVisitado.get());
-			Seguido visitadoEsSeguidoPorLogueado = new Seguido(usuarioVisitado.get(), usuarioLogueado.get());
+		Optional<Usuario> usuarioPerfil = usuarioService.findById(id);
+		if (usuarioLogueado.isPresent() && usuarioPerfil.isPresent()) {
+			Seguidor logueadoSigueAVisitado = new Seguidor(usuarioLogueado.get(), usuarioPerfil.get());
+			Seguido visitadoEsSeguidoPorLogueado = new Seguido(usuarioPerfil.get(), usuarioLogueado.get());
 			seguidorService.save(logueadoSigueAVisitado);
 			seguidoService.save(visitadoEsSeguidoPorLogueado);
+			// AQUI SE CREATIA UNA SOLICITUD<---------------------------------------------------------------
+			if (!usuarioLogueado.get().equals(usuarioPerfil.get())) {
+				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.SOLICITUD,
+						LocalDate.now(), usuarioPerfil.get(), false);
+				notificacionService.save(notificacion);
+			}
 		}
-		return "redirect:/perfil/" + usuarioVisitado.get().getUsername() + "/p";
+		return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p";
 	}
 
 	@GetMapping("/dejarDeSeguir/{id}")
