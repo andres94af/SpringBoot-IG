@@ -13,4 +13,6 @@ public interface INotificacionService {
 	List<Notificacion> findAll();
 	
 	Optional<Notificacion> findById(Integer id);
+	
+	void delete(Integer id);
 }

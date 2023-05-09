@@ -10,7 +10,7 @@ import com.instagram.model.Solicitud;
 import com.instagram.repository.iSolicitudRepository;
 
 @Service
-public class ISolicitudServiceImpl implements ISolicitudService{
+public class SolicitudServiceImpl implements ISolicitudService{
 	
 	@Autowired
 	iSolicitudRepository solicitudRepo;

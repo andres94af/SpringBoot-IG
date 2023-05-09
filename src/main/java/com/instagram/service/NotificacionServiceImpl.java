@@ -34,4 +34,9 @@ public class NotificacionServiceImpl implements INotificacionService {
 		return notificacionRepo.findById(id);
 	}
 
+	@Override
+	public void delete(Integer id) {
+		notificacionRepo.deleteById(id);
+	}
+
 }

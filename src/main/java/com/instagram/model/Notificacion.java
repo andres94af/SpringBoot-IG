@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +25,9 @@ public class Notificacion {
 	
 	@ManyToOne
 	private Publicacion publicacion;
+	
+	@OneToOne
+	private Solicitud solicitud;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fecha;
@@ -36,6 +40,16 @@ public class Notificacion {
 	public Notificacion() {
 	}
 
+	public Notificacion(Usuario emisor, TipoDeNotificacion tipo, LocalDate fecha, Usuario destinatario,
+			boolean recibida, Solicitud solicitud) {
+		this.emisor = emisor;
+		this.tipo = tipo;
+		this.fecha = fecha;
+		this.destinatario = destinatario;
+		this.recibida = recibida;
+		this.solicitud = solicitud;
+	}
+	
 	public Notificacion(Usuario emisor, TipoDeNotificacion tipo, LocalDate fecha, Usuario destinatario,
 			boolean recibida, Publicacion publicacion) {
 		this.emisor = emisor;
@@ -110,6 +124,14 @@ public class Notificacion {
 
 	public void setPublicacion(Publicacion publicacion) {
 		this.publicacion = publicacion;
+	}
+
+	public Solicitud getSolicitud() {
+		return solicitud;
+	}
+
+	public void setSolicitud(Solicitud solicitud) {
+		this.solicitud = solicitud;
 	}
 
 	@Override

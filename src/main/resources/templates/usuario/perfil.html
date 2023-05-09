@@ -12,6 +12,10 @@
 		<div class="row justify-content-center">
 			<div class="col-md-7 espacio">
 				<!-- Alertas -->
+				<div th:if="${param.s_enviada}" class="alert alert-info alert-dismissible fade show" role="alert">
+				  La solicitud ya ha sido enviada.
+				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
 				<div th:if="${param.existe_u}" class="alert alert-danger alert-dismissible fade show" role="alert">
 				  Existe un usuario con el nombre solicitado, intenta con otro.
 				  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -38,7 +42,7 @@
 								<button class="btn btn-light btn-sm btn-gris px-3" data-bs-toggle="modal" data-bs-target="#editarDatos">Editar perfil <i class="fs-6 bi bi-gear-wide"></i></button>
 							</div>
 							<div class="col-md-auto" th:unless="${usuarioLogueado==usuarioPerfil}">
-								<a class="btn btn-primary btn-azul btn-sm px-3" th:unless="${seguido}" th:href="@{/cuenta/seguir/}+${usuarioPerfil.id}">Seguir</a>
+								<a class="btn btn-primary btn-azul btn-sm px-3" th:unless="${seguido}" th:href="@{/cuenta/enviarSolicitud/}+${usuarioPerfil.id}">Seguir</a>
 								<div class="dropdown" th:if="${seguido}">
 								  <button class="btn-sm btn btn-light dropdown-toggle btn-gris px-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">Siguiendo</button>
 								  <ul class="dropdown-menu">

@@ -4,11 +4,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.instagram.model.Seguido;
+import com.instagram.model.Usuario;
 import com.instagram.repository.ISeguidoRepository;
 
 @Service
 public class SeguidoServiceImpl implements ISeguidoService {
-	
+
 	@Autowired
 	ISeguidoRepository seguidoRepo;
 
@@ -25,6 +26,12 @@ public class SeguidoServiceImpl implements ISeguidoService {
 	@Override
 	public void deleteById(Integer id) {
 		seguidoRepo.deleteById(id);
+	}
+
+	@Override
+	public void nuevoSeguido(Usuario usuario1, Usuario usuario2) {
+		Seguido seguido = new Seguido(usuario1, usuario2);
+		save(seguido);
 	}
 
 }

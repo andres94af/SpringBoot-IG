@@ -26,6 +26,7 @@ import com.instagram.model.Notificacion;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Seguido;
 import com.instagram.model.Seguidor;
+import com.instagram.model.Solicitud;
 import com.instagram.model.TipoDeNotificacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IAutorizacionService;
@@ -36,6 +37,7 @@ import com.instagram.service.INotificacionService;
 import com.instagram.service.IPublicacionService;
 import com.instagram.service.ISeguidoService;
 import com.instagram.service.ISeguidorService;
+import com.instagram.service.ISolicitudService;
 import com.instagram.service.IUsuarioService;
 import com.instagram.service.cloudinary.CloudinarySevice;
 
@@ -78,6 +80,9 @@ public class CuentaController {
 
 	@Autowired
 	INotificacionService notificacionService;
+
+	@Autowired
+	ISolicitudService solicitudService;
 
 	// METOGO QUE AGREGA UN COMENTARIO A UNA PUBLICACION
 	@PostMapping("/agregarComentario/{id}")
@@ -185,23 +190,70 @@ public class CuentaController {
 		return "redirect:/perfil/" + usuario.get().getUsername() + "/p?act_e";
 	}
 
-	@GetMapping("/seguir/{id}")
-	public String seguir(HttpSession session, @PathVariable("id") Integer id) {
+	@GetMapping("/enviarSolicitud/{id}")
+	public String enviarSolicitud(HttpSession session, @PathVariable("id") Integer id) {
 		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		Optional<Usuario> usuarioPerfil = usuarioService.findById(id);
 		if (usuarioLogueado.isPresent() && usuarioPerfil.isPresent()) {
-			Seguidor logueadoSigueAVisitado = new Seguidor(usuarioLogueado.get(), usuarioPerfil.get());
-			Seguido visitadoEsSeguidoPorLogueado = new Seguido(usuarioPerfil.get(), usuarioLogueado.get());
-			seguidorService.save(logueadoSigueAVisitado);
-			seguidoService.save(visitadoEsSeguidoPorLogueado);
-			// AQUI SE CREATIA UNA SOLICITUD<---------------------------------------------------------------
-			if (!usuarioLogueado.get().equals(usuarioPerfil.get())) {
-				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.SOLICITUD,
+			List<Solicitud> solicitudes = solicitudService.findAll();
+			for (Solicitud s : solicitudes) {
+				if (s.getEmisor().equals(usuarioLogueado.get()) && s.getDestinatario().equals(usuarioPerfil.get())) {
+					return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p?s_enviada";
+				}
+			}
+			if (usuarioPerfil.get().isPerfilPublico()) {
+				seguir(session, id);
+				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.SEGUIDO,
 						LocalDate.now(), usuarioPerfil.get(), false);
+				notificacionService.save(notificacion);
+				return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p";
+			} else {
+				Solicitud solicitud = new Solicitud(usuarioLogueado.get(), LocalDate.now(), usuarioPerfil.get(), false);
+				solicitudService.save(solicitud);
+				Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.SOLICITUD,
+						LocalDate.now(), usuarioPerfil.get(), false, solicitud);
 				notificacionService.save(notificacion);
 			}
 		}
-		return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p";
+		return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p?s_enviada";
+	}
+
+	@GetMapping("/aceptarSolicitud/{idNotificacion}")
+	public String AceptarSolicitud(HttpSession session, @PathVariable("idNotificacion") Integer idNotificacion) {
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
+		Optional<Notificacion> notificacionOpt = notificacionService.findById(idNotificacion);
+		if (usuarioLogueado.isPresent() && notificacionOpt.isPresent()) {
+			notificacionService.delete(notificacionOpt.get().getId());
+			solicitudService.delete(notificacionOpt.get().getSolicitud().getId());
+			Notificacion notificacion = new Notificacion(usuarioLogueado.get(), TipoDeNotificacion.SOLICITUD_ACEPTADA,
+					LocalDate.now(), notificacionOpt.get().getEmisor(), false);
+			notificacionService.save(notificacion);
+			seguidorService.nuevoSeguidor(notificacionOpt.get().getEmisor(), usuarioLogueado.get());
+			seguidoService.nuevoSeguido(usuarioLogueado.get(), notificacionOpt.get().getEmisor());
+		}
+		return "redirect:/";
+	}
+
+	@GetMapping("/eliminarSolicitud/{idNotificacion}")
+	public String eliminarSolicitud(HttpSession session, @PathVariable("idNotificacion") Integer idNotificacion) {
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
+		Optional<Notificacion> notificacionOpt = notificacionService.findById(idNotificacion);
+		if (usuarioLogueado.isPresent() && notificacionOpt.isPresent()) {
+			notificacionService.delete(notificacionOpt.get().getId());
+			solicitudService.delete(notificacionOpt.get().getSolicitud().getId());
+		}
+		return "redirect:/";
+	}
+
+	public void seguir(HttpSession session, Integer id) {
+		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
+		Optional<Usuario> usuarioPerfil = usuarioService.findById(id);
+		if (usuarioLogueado.isPresent() && usuarioPerfil.isPresent()) {
+			if (!usuarioLogueado.get().equals(usuarioPerfil.get())) {
+				seguidorService.nuevoSeguidor(usuarioLogueado.get(), usuarioPerfil.get());
+				seguidoService.nuevoSeguido(usuarioPerfil.get(), usuarioLogueado.get());
+			}
+		}
 	}
 
 	@GetMapping("/dejarDeSeguir/{id}")
@@ -226,18 +278,17 @@ public class CuentaController {
 		}
 		return "redirect:/perfil/" + usuarioVisitado.get().getUsername() + "/p";
 	}
-	
-	@GetMapping("/notificacionVista/{idNotificacion}/{idPublicacion}")
-	public String notificacionVista(@PathVariable("idNotificacion") Integer idNotificacion, @PathVariable("idPublicacion") Integer idPublicacion) {
+
+	@GetMapping("/notificacionVista/{idNotificacion}")
+	public String notificacionVista(@PathVariable("idNotificacion") Integer idNotificacion) {
 		Optional<Notificacion> n = notificacionService.findById(idNotificacion);
-		Optional<Publicacion> p = publicacionService.findById(idPublicacion);
-		if (n.isPresent() && p.isPresent()) {
+		if (n.isPresent()) {
 			n.get().setRecibida(true);
 			notificacionService.update(n.get());
-			return "redirect:/#post" + idPublicacion;
+			if (n.get().getTipo().equals(TipoDeNotificacion.COMENTARIO) || n.get().getTipo().equals(TipoDeNotificacion.LIKE)) {
+				return "redirect:/#post" + n.get().getPublicacion().getId();				
+			}
 		}
-		System.out.println("El id de la notificacion es: " + idNotificacion);
-		System.out.println("El id de la publicacion es: " + idPublicacion);
 		return "redirect:/";
 	}
 
