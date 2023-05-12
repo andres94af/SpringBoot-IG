@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.instagram.model.Notificacion;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Seguidor;
+import com.instagram.model.Solicitud;
 import com.instagram.model.TipoDePublicacion;
 import com.instagram.model.Usuario;
 import com.instagram.service.IImagenService;
 import com.instagram.service.IPublicacionService;
+import com.instagram.service.ISolicitudService;
 import com.instagram.service.IUsuarioService;
 import jakarta.servlet.http.HttpSession;
 
@@ -37,6 +39,9 @@ public class HomeController {
 	@Autowired
 	IPublicacionService publicacionService;
 
+	@Autowired
+	ISolicitudService solicitudService;
+
 	// REDIRECCION AL INICIO SI SE ENCUENTRA LOGUEADO
 	@GetMapping("/")
 	public String inicio(Model model, HttpSession session) {
@@ -46,6 +51,7 @@ public class HomeController {
 		List<Publicacion> publicaciones = publicacionService.publicacionesQueSigo(usuarioLogueado.get());
 		List<Notificacion> notificaciones = usuarioLogueado.get().getNotificaciones();
 		notificaciones.removeIf(n -> n.isRecibida());
+		model.addAttribute("title", "Spring Boot IG");
 		model.addAttribute("usuarioLogueado", usuarioLogueado.get());
 		model.addAttribute("historias", usuariosHistorias);
 		model.addAttribute("sugerencias", usuariosSugeridos);
@@ -63,9 +69,12 @@ public class HomeController {
 			Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 			List<Publicacion> publicacionesDelPerfil = publicacionService.findByUsuario(usuarioPerfil.get());
 			List<Notificacion> notificaciones = usuarioLogueado.get().getNotificaciones();
+			List<Solicitud> solicitudes = solicitudService.findAll();
 			notificaciones.removeIf(n -> n.isRecibida());
 			boolean perfilVisible = usuarioService.perfilVisible(usuarioLogueado.get(), usuarioPerfil.get());
-			model.addAttribute("title", " @" + username);
+			boolean solicitudEnviada = false;
+			model.addAttribute("title",
+					usuarioPerfil.get().getNombre() + " " + usuarioPerfil.get().getApellido() + " (@" + username + ")");
 			model.addAttribute("usuarioLogueado", usuarioLogueado.get());
 			model.addAttribute("usuarioPerfil", usuarioPerfil.get());
 			switch (vista) {
@@ -84,6 +93,13 @@ public class HomeController {
 				model.addAttribute("vista", 1);
 				break;
 			}
+			for (Solicitud sol : solicitudes) {
+				if (sol.getEmisor().equals(usuarioLogueado.get())
+						&& sol.getDestinatario().equals(usuarioPerfil.get())) {
+					solicitudEnviada = true;
+				}
+			}
+			model.addAttribute("solicitudEnviada", solicitudEnviada);
 			model.addAttribute("perfilVisible", perfilVisible);
 			model.addAttribute("notificaciones", notificaciones);
 			for (Seguidor s : usuarioPerfil.get().getSeguidores()) {
@@ -101,7 +117,7 @@ public class HomeController {
 	// REDIRECCION A LOGUIN. SI ESTA LOGUEADO REDIRECCIONA AL INICIO
 	@GetMapping("/login")
 	public String vistaLogin(Model model, Authentication auth) {
-		model.addAttribute("title", " - Login");
+		model.addAttribute("title", "Spring Boot IG - Login");
 		if (auth != null) {
 			return "redirect:/";
 		}
@@ -111,7 +127,7 @@ public class HomeController {
 	// REDIRECCION A VISTA REGISTRO
 	@GetMapping("/registro")
 	public String vistaRegistro(Model model) {
-		model.addAttribute("title", " - Registro");
+		model.addAttribute("title", "Spring Boot IG - Registro");
 		return "registro";
 	}
 

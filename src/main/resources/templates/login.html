@@ -14,7 +14,9 @@
 					<div class="card-body p-4">
 						<form th:action="@{/login}" method="post">
 							<div class="mb-5">
-								<img src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png" class="img-fluid">
+								<img
+									src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png"
+									class="img-fluid">
 							</div>
 							<div class="mb-3">
 								<input type="email" class="form-control" id="username"
@@ -24,7 +26,9 @@
 								<input type="password" class="form-control" id="password"
 									name="password" placeholder="Contraseña" required>
 							</div>
-							<p th:if="${param.error}" class="text-danger text-left"><small>Email o contraseña incorrectos</small></p>
+							<p th:if="${param.error}" class="text-danger text-left">
+								<small>Email o contraseña incorrectos</small>
+							</p>
 							<div class="d-grid gap-2 mb-3">
 								<button type="submit" class="btn btn-primary btn-azul">
 									<strong>Iniciar sesión</strong>
@@ -56,7 +60,7 @@
 	<!-- Footer -->
 	<footer th:replace="~{layout/layout.html :: footer}"></footer>
 	<!-- FIN Footer -->
-	
+
 	<!-- Scripts -->
 	<div th:replace="~{layout/layout.html :: scripts}"></div>
 	<!-- FIN Scripts -->

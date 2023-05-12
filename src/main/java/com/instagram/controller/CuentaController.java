@@ -198,7 +198,7 @@ public class CuentaController {
 			List<Solicitud> solicitudes = solicitudService.findAll();
 			for (Solicitud s : solicitudes) {
 				if (s.getEmisor().equals(usuarioLogueado.get()) && s.getDestinatario().equals(usuarioPerfil.get())) {
-					return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p?s_enviada";
+					return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p";
 				}
 			}
 			if (usuarioPerfil.get().isPerfilPublico()) {
@@ -215,7 +215,7 @@ public class CuentaController {
 				notificacionService.save(notificacion);
 			}
 		}
-		return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p?s_enviada";
+		return "redirect:/perfil/" + usuarioPerfil.get().getUsername() + "/p";
 	}
 
 	@GetMapping("/aceptarSolicitud/{idNotificacion}")

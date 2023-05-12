@@ -5,28 +5,39 @@
 <!-- Fragmento Head -->
 <head th:fragment="head">
 <meta charset="utf-8">
-	<title>Spring Boot IG[[${title}]]</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<link rel="shortcut icon" href="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/logo-insta_jyrhux.png">
+<title>[[${title}]]</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="shortcut icon"
+	href="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/logo-insta_jyrhux.png">
 </head>
 <!-- FIN Fragmento Head -->
 <body>
 	<!-- Fragmento Header -->
 	<div th:fragment="nav">
-		<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 border-end fixed-top" >
-			<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
-				<a th:href="@{/}" class="d-flex align-items-center py-3 mb-md-0 me-md-auto text-decoration-none">
-					<img src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png" class="img-fluid logo-nav" id="logo-nav">
+		<div
+			class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 border-end fixed-top">
+			<div
+				class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 min-vh-100">
+				<a th:href="@{/}"
+					class="d-flex align-items-center py-3 mb-md-0 me-md-auto text-decoration-none">
+					<img
+					src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png"
+					class="img-fluid logo-nav" id="logo-nav">
 				</a>
-				<ul class="nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+				<ul
+					class="nav flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+					id="menu">
 					<li class="nav-item"><a th:href="@{/}"
 						class="nav-link align-middle px-0 link-dark"> <i
 							class="fs-4 bi bi-house-door"></i><span
-							class="ms-1 d-none d-sm-inline">Inicio</span></a>
-					</li>
+							class="ms-1 d-none d-sm-inline">Inicio</span></a></li>
 					<li><a href="#submenu3" data-bs-toggle="collapse"
 						class="nav-link px-0 align-middle link-dark"> <i
 							class="fs-4 bi bi-search"></i><span
@@ -44,43 +55,49 @@
 									</form>
 								</div>
 							</li>
-						</ul>
-					</li>
+						</ul></li>
 					<li class="nav-item"><a href="#"
 						class="nav-link align-middle px-0 link-dark"> <i
 							class="fs-4 bi bi-incognito"></i><span
-							class="ms-1 d-none d-sm-inline">Explorar</span></a>
-					</li>
+							class="ms-1 d-none d-sm-inline">Explorar</span></a></li>
 					<li class="nav-item"><a href="#"
 						class="nav-link align-middle px-0 link-dark"> <i
 							class="fs-4 bi bi-camera-reels"></i><span
-							class="ms-1 d-none d-sm-inline">Reels</span></a>
-					</li>
+							class="ms-1 d-none d-sm-inline">Reels</span></a></li>
 					<li class="nav-item"><a href="#"
 						class="nav-link align-middle px-0 link-dark"> <i
 							class="fs-4 bi bi-chat-text"></i><span
-							class="ms-1 d-none d-sm-inline">Mensajes</span></a>
+							class="ms-1 d-none d-sm-inline">Mensajes</span></a></li>
+					<li class="nav-item">
+						<button type="button" class="nav-link align-middle px-0 link-dark"
+							data-bs-toggle="modal" data-bs-target="#notificaciones">
+							<i class="fs-4 bi bi-heart"></i> <span
+								class="ms-1 d-none d-sm-inline">Notificaciones</span> <span
+								id="nro-notificacion"
+								th:if="${usuarioLogueado.notificaciones.size()>0}"
+								th:text="'-'+${usuarioLogueado.notificaciones.size()}+'-'"></span>
+						</button>
 					</li>
 					<li class="nav-item">
-						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#notificaciones"> <i
-							class="fs-4 bi bi-heart"></i>
-							<span class="ms-1 d-none d-sm-inline">Notificaciones</span> <span id="nro-notificacion" th:if="${usuarioLogueado.notificaciones.size()>0}" th:text="'-'+${usuarioLogueado.notificaciones.size()}+'-'"></span></button>
+						<button type="button" class="nav-link align-middle px-0 link-dark"
+							data-bs-toggle="modal" data-bs-target="#nuevaPublicacion">
+							<i class="fs-4 bi bi-plus-square"></i><span
+								class="ms-1 d-none d-sm-inline">Crear</span>
+						</button>
 					</li>
-					<li class="nav-item">
-						<button type="button" class="nav-link align-middle px-0 link-dark" data-bs-toggle="modal" data-bs-target="#nuevaPublicacion"> <i class="fs-4 bi bi-plus-square"></i><span class="ms-1 d-none d-sm-inline">Crear</span></button>
-					</li>
-					<li class="nav-item"><a th:href="@{/perfil/}+${usuarioLogueado.username}+'/p'" class="nav-link align-middle px-0 link-dark">
-						<img th:src="${usuarioLogueado.imgPerfil.url}" class="img-perfil-nav">
-						<span class="ms-1 d-none d-sm-inline">Perfil</span></a>
-					</li>
+					<li class="nav-item"><a
+						th:href="@{/perfil/}+${usuarioLogueado.username}+'/p'"
+						class="nav-link align-middle px-0 link-dark"> <img
+							th:src="${usuarioLogueado.imgPerfil.url}" class="img-perfil-nav">
+							<span class="ms-1 d-none d-sm-inline">Perfil</span></a></li>
 				</ul>
 				<hr>
 				<div class="dropdown pb-4 dropup">
 					<a
 						class="d-flex align-items-center text-decoration-none dropdown-toggle link-dark"
-						id="dropdownUser1" data-bs-toggle="dropdown"
-						aria-expanded="false"><i class="fs-1 bi bi-list"></i> <span
-						class="d-none d-sm-inline mx-1">Mas</span> </a>
+						id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false"><i
+						class="fs-1 bi bi-list"></i> <span class="d-none d-sm-inline mx-1">Mas</span>
+					</a>
 					<ul class="dropdown-menu shadow" aria-labelledby="dropdownUser1">
 						<li><a class="dropdown-item" href="#">Tu actividad</a></li>
 						<li><a class="dropdown-item" href="#">Configuración</a></li>
@@ -90,84 +107,121 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Modal crear publicacion -->
-		<div class="modal fade" id="nuevaPublicacion" tabindex="-1" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title fs-5">Nueva publicación</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      <div class="modal-body">
-		        <form th:action="@{/cuenta/crearPublicacion}" method="post" enctype="multipart/form-data">
-	        	  <div class="mb-3">
-				    <label for="titulo" class="form-label">Título:</label>
-				    <input type="text" class="form-control" id="titulo" name="titulo">
-				  </div>
-				  <div class="mb-3">
-				    <label for="img" class="form-label">Imagen:</label>
-				    <input accept="image/png,image/jpeg,image/jpg" type="file" class="form-control" id="img" name="img" required>
-				  </div>
-				  <div class="mb-3">
-				    <label for="efecto" class="form-label">Efectos:</label>
-				    <select class="form-select" id="efecto" name="efecto">
-					  <option selected value="">-- Sin efecto --</option>
-					  <option value="cartoonify">Caricatura</option>
-					  <option value="grayscale">Escala de grises</option>
-					  <option value="improve:50">Mejorada</option>
-					  <option value="sepia">Sepia</option>
-					</select>
-				  </div>
-				  <div class="mb-3">
-				    <label for="ubicacion" class="form-label">Ubicación:</label>
-				    <input type="text" class="form-control" id="ubicacion" name="ubicacion">
-				  </div>
-				  <div class="mb-3">
-				    <label for="tipo" class="form-label">Tipo de publicación</label>
-				    <select class="form-select" id="tipo" name="tipo" required>
-						<option value="PUBLICACION">Publicación</option>
-						<option value="REEL">Reel</option>
-					</select>
-				  </div>
-				  <div class="text-center">
-				  	<button type="submit" class="link-info link-offset-2 link-underline link-underline-opacity-0 btn-publicar"><strong>Publicar</strong></button>
-				  </div>
-		        </form>
-		      </div>
-		    </div>
-		  </div>
+		<div class="modal fade" id="nuevaPublicacion" tabindex="-1"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Nueva publicación</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form th:action="@{/cuenta/crearPublicacion}" method="post"
+							enctype="multipart/form-data">
+							<div class="mb-3">
+								<label for="titulo" class="form-label">Título:</label> <input
+									type="text" class="form-control" id="titulo" name="titulo">
+							</div>
+							<div class="mb-3">
+								<label for="img" class="form-label">Imagen:</label> <input
+									accept="image/png,image/jpeg,image/jpg" type="file"
+									class="form-control" id="img" name="img" required>
+							</div>
+							<div class="mb-3">
+								<label for="efecto" class="form-label">Efectos:</label> <select
+									class="form-select" id="efecto" name="efecto">
+									<option selected value="">-- Sin efecto --</option>
+									<option value="cartoonify">Caricatura</option>
+									<option value="grayscale">Escala de grises</option>
+									<option value="improve:50">Mejorada</option>
+									<option value="sepia">Sepia</option>
+								</select>
+							</div>
+							<div class="mb-3">
+								<label for="ubicacion" class="form-label">Ubicación:</label> <input
+									type="text" class="form-control" id="ubicacion"
+									name="ubicacion">
+							</div>
+							<div class="mb-3">
+								<label for="tipo" class="form-label">Tipo de publicación</label>
+								<select class="form-select" id="tipo" name="tipo" required>
+									<option value="PUBLICACION">Publicación</option>
+									<option value="REEL">Reel</option>
+								</select>
+							</div>
+							<div class="text-center">
+								<button type="submit"
+									class="link-info link-offset-2 link-underline link-underline-opacity-0 btn-publicar">
+									<strong>Publicar</strong>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 		<!-- FIN Modal crear publicacion -->
-		
+
 		<!-- Modal crear publicacion -->
-		<div class="modal fade" id="notificaciones" tabindex="-1" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-centered modal-lg">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title fs-5">Notificaciones</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      	<table class="table text-center" th:if="${notificaciones.size()>0}">
-				  <tbody>
-				    <tr th:each="notificacion : ${notificaciones}">
-				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).LIKE}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> le dio like a tu publicación</a></td>
-				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).COMENTARIO}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> ha comentado tu publicación</a></td>
-				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SOLICITUD_ACEPTADA}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> ha aceptado tu solicitud de amistad</a></td>
-				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SEGUIDO}"><a class="link-dark link-offset-2 link-underline link-underline-opacity-0" th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> ha comenzado a seguirte</a></td>
-				      <td th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SOLICITUD}"><strong><span th:text="${notificacion.emisor.username}"></span></strong> te envio una solicitud de seguimiento
-				      <span><a th:href="@{/cuenta/aceptarSolicitud/}+${notificacion.id}" type="button" class="btn btn-primary btn-sm btn-azul">Aceptar</a></span>
-				      <span><a th:href="@{/cuenta/eliminarSolicitud/}+${notificacion.id}" type="button" class="btn-sm btn btn-light btn-gris px-2">Eliminar</a></span></td>		      
-				    </tr>
-				</table>
-			      <div class="modal-boddy text-center" th:unless="${notificaciones.size()>0}">
-			      	<p class="m-2">No tiene nuevas notificaciones...</p>
-			      </div>
-		      </div>
-		    </div>
-		  </div>
+		<div class="modal fade" id="notificaciones" tabindex="-1"
+			aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Notificaciones</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<table class="table text-center" th:if="${notificaciones.size()>0}">
+						<tbody>
+							<tr th:each="notificacion : ${notificaciones}">
+								<td
+									th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).LIKE}"><a
+									class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+									th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span
+											th:text="${notificacion.emisor.username}"></span></strong> le dio like
+										a tu publicación</a></td>
+								<td
+									th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).COMENTARIO}"><a
+									class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+									th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span
+											th:text="${notificacion.emisor.username}"></span></strong> ha
+										comentado tu publicación</a></td>
+								<td
+									th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SOLICITUD_ACEPTADA}"><a
+									class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+									th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span
+											th:text="${notificacion.emisor.username}"></span></strong> ha aceptado
+										tu solicitud de amistad</a></td>
+								<td
+									th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SEGUIDO}"><a
+									class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+									th:href="@{/cuenta/notificacionVista/}+${notificacion.id}"><strong><span
+											th:text="${notificacion.emisor.username}"></span></strong> ha
+										comenzado a seguirte</a></td>
+								<td
+									th:if="${notificacion.tipo == T(com.instagram.model.TipoDeNotificacion).SOLICITUD}"><strong><span
+										th:text="${notificacion.emisor.username}"></span></strong> te envio una
+									solicitud de amistad <span><a
+										th:href="@{/cuenta/aceptarSolicitud/}+${notificacion.id}"
+										type="button" class="btn btn-primary btn-sm btn-azul">Aceptar</a></span>
+									<span><a
+										th:href="@{/cuenta/eliminarSolicitud/}+${notificacion.id}"
+										type="button" class="btn-sm btn btn-light btn-gris px-2">Eliminar</a></span></td>
+							</tr>
+					</table>
+					<div class="modal-boddy text-center"
+						th:unless="${notificaciones.size()>0}">
+						<p class="m-2">No tiene nuevas notificaciones...</p>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- FIN Modal crear publicacion -->
-		
+
 	</div>
 	<!-- FIN Fragmento Header -->
 
@@ -189,7 +243,7 @@
 		</p>
 	</footer>
 	<!-- FIN Fragmento Footer -->
-	
+
 	<!-- Fragmento Scripts -->
 	<div th:fragment="scripts">
 		<script

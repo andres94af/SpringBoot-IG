@@ -9,7 +9,9 @@
 				<div class="card mb-3">
 					<div class="card-body p-4">
 						<div class="mb-3 px-4">
-							<img src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png" class="img-fluid">
+							<img
+								src="https://res.cloudinary.com/da52tfqfk/image/upload/v1683017554/instagram/instagram-n_m1gnjx.png"
+								class="img-fluid">
 						</div>
 						<h5 class="text-secondary">Regístrate para ver fotos y videos
 							de tus amigos.</h5>
@@ -23,7 +25,9 @@
 							<div class="mt-4 mb-3">
 								<input type="email" class="form-control" id="email" name="email"
 									placeholder="Correo electrónico" required>
-									<p th:if="${param.existe_m}" class="text-danger"><small>Existe una cuenta con el email ingresado</small></p>
+								<p th:if="${param.existe_m}" class="text-danger">
+									<small>Existe una cuenta con el email ingresado</small>
+								</p>
 							</div>
 							<div class="mb-3">
 								<input type="text" class="form-control" id="nombre"
@@ -34,26 +38,30 @@
 									name="apellido" placeholder="Apellido" required>
 							</div>
 							<div class="mb-3">
-							   <select class="form-select" id="genero" name="genero">
-								 	<option selected value="">-- Seleccione su género --</option>
-								 	<option value="Femenino">Femenino</option>
-								 	<option value="Masculino">Masculino</option>
-								 	<option value="Otro">Otro</option>
+								<select class="form-select" id="genero" name="genero">
+									<option selected value="">-- Seleccione su género --</option>
+									<option value="Femenino">Femenino</option>
+									<option value="Masculino">Masculino</option>
+									<option value="Otro">Otro</option>
 								</select>
-							 </div>
+							</div>
 							<div class="mb-3">
-								<label for="fechaNacimiento"><strong>Fecha de nacimiento</strong></label>
-								<input type="date" class="form-control" id="fechaNacimiento"
-									name="fechaNacimiento" required>
+								<label for="fechaNacimiento"><strong>Fecha de
+										nacimiento</strong></label> <input type="date" class="form-control"
+									id="fechaNacimiento" name="fechaNacimiento" required>
 							</div>
 							<div class="mb-3">
 								<input type="text" class="form-control" id="username"
-									name="username" placeholder="Nombre de usuario" required autocomplete="off">
-									<p th:if="${param.existe_u}" class="text-danger"><small>Existe una cuenta con el mismo nombre de usuario</small></p>
+									name="username" placeholder="Nombre de usuario" required
+									autocomplete="off">
+								<p th:if="${param.existe_u}" class="text-danger">
+									<small>Existe una cuenta con el mismo nombre de usuario</small>
+								</p>
 							</div>
 							<div class="mb-3">
 								<input type="password" class="form-control" id="password"
-									name="password" placeholder="Contraseña" required autocomplete="off">
+									name="password" placeholder="Contraseña" required
+									autocomplete="off">
 							</div>
 							<p class="text-secondary">
 								<small> Al registrarte, aceptas nuestras Condiciones.
@@ -87,7 +95,7 @@
 	<!-- Footer -->
 	<footer th:replace="~{layout/layout.html :: footer}"></footer>
 	<!-- FIN Footer -->
-	
+
 	<!-- Scripts -->
 	<div th:replace="~{layout/layout.html :: scripts}"></div>
 	<!-- FIN Scripts -->
