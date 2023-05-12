@@ -83,3 +83,7 @@
 	background-color: #EFEFEF;
 	font-weight: 500;
 }
+
+.chat{
+	height: calc(100vh - 3rem);
+}
