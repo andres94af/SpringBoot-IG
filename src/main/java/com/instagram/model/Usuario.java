@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -46,6 +47,8 @@ public class Usuario {
 	private boolean perfilPublico;
 	@OneToMany(mappedBy = "destinatario")
 	private List<Notificacion> notificaciones;
+	@ManyToMany(mappedBy = "usuarios")
+	private List<Chat> chats;
 
 	public Usuario() {
 	}
@@ -53,7 +56,7 @@ public class Usuario {
 	public Usuario(String nombre, String apellido, LocalDate fechaNacimiento, String genero, String email,
 			String username, String password, Imagen imgPerfil, Autorizacion autorizacion, boolean perfilPublico,
 			List<Publicacion> publicaciones, List<Seguidor> seguidores, List<Seguido> seguidos, String info2,
-			String info1, List<Notificacion> notificaciones) {
+			String info1, List<Notificacion> notificaciones, List<Chat> chats) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.fechaNacimiento = fechaNacimiento;
@@ -70,6 +73,7 @@ public class Usuario {
 		this.info2 = info2;
 		this.perfilPublico = perfilPublico;
 		this.notificaciones = notificaciones;
+		this.chats = chats;
 	}
 
 	public Integer getId() {
@@ -206,6 +210,14 @@ public class Usuario {
 
 	public void setNotificaciones(List<Notificacion> notificaciones) {
 		this.notificaciones = notificaciones;
+	}
+
+	public List<Chat> getChats() {
+		return chats;
+	}
+
+	public void setChats(List<Chat> chats) {
+		this.chats = chats;
 	}
 
 	@Override

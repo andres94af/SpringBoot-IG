@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.instagram.model.Imagen;
 import com.instagram.model.Usuario;
 import com.instagram.repository.IImagenRepository;
+import com.instagram.service.IImagenService;
 
 @Service
 public class ImagenServiceImpl implements IImagenService{

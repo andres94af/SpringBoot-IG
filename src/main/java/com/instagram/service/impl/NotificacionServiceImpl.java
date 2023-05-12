@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.instagram.model.Notificacion;
 import com.instagram.repository.iNotificacionRepository;
+import com.instagram.service.INotificacionService;
 
 @Service
 public class NotificacionServiceImpl implements INotificacionService {

@@ -23,7 +23,7 @@ public class ChatController {
 	IUsuarioService usuarioService;
 
 	// REDIRECCION A LA VISTA MENSAJES DEL USUARIO LOGUEADO
-	@GetMapping("inbox")
+	@GetMapping("/inbox")
 	public String inbox(Model model, HttpSession session) {
 		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		List<Usuario> chats = usuarioService.findAllSeguidos(usuarioLogueado.get());
@@ -33,7 +33,7 @@ public class ChatController {
 		model.addAttribute("usuarioLogueado", usuarioLogueado.get());
 		model.addAttribute("notificaciones", notificaciones);
 		model.addAttribute("chats", chats);
-		return "usuario/mensajes";
+		return "usuario/chats";
 	}
 
 }

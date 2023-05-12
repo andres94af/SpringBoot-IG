@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.instagram.model.Publicacion;
 import com.instagram.model.Usuario;
 import com.instagram.repository.IPublicacionRepository;
+import com.instagram.service.IPublicacionService;
+import com.instagram.service.IUsuarioService;
 
 @Service
 public class PublicacionesServiceImpl implements IPublicacionService {

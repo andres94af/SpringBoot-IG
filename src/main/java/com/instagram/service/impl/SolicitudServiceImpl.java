@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.instagram.model.Solicitud;
 import com.instagram.repository.iSolicitudRepository;
+import com.instagram.service.ISolicitudService;
 
 @Service
 public class SolicitudServiceImpl implements ISolicitudService{

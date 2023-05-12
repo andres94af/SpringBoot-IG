@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.instagram.model.Seguidor;
 import com.instagram.model.Usuario;
 import com.instagram.repository.ISeguidorRepository;
+import com.instagram.service.ISeguidorService;
 
 @Service
 public class SeguidorServiceImpl implements ISeguidorService {

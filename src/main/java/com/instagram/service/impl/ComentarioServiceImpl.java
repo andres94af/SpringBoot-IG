@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.instagram.model.Comentario;
 import com.instagram.repository.IComentarioRepository;
+import com.instagram.service.IComentarioService;
 
 @Service
 public class ComentarioServiceImpl implements IComentarioService{

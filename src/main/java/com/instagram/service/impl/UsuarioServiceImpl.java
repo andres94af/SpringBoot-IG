@@ -1,4 +1,4 @@
-package com.instagram.service;
+package com.instagram.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,10 @@ import com.instagram.model.Imagen;
 import com.instagram.model.Seguido;
 import com.instagram.model.Usuario;
 import com.instagram.repository.IUsuarioRepository;
+import com.instagram.service.IAutorizacionService;
+import com.instagram.service.IImagenService;
+import com.instagram.service.ISeguidoService;
+import com.instagram.service.IUsuarioService;
 
 @Service
 public class UsuarioServiceImpl implements IUsuarioService {

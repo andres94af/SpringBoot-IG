@@ -84,6 +84,9 @@
 	font-weight: 500;
 }
 
-.chat{
-	height: calc(100vh - 3rem);
+.img-chat {
+	width: 3rem;
+	height: 3rem;
+	border-radius: 50%;
+	border: solid 1px lightgray;
 }
