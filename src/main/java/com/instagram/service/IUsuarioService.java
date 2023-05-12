@@ -26,4 +26,6 @@ public interface IUsuarioService {
 	List<Usuario> findAllNoSeguidos(Usuario usuario);
 
 	boolean perfilVisible(Usuario usuarioLogueado, Usuario usuarioPerfil);
+	
+	List<Usuario> findUsuariosChats(Usuario usuario);
 }

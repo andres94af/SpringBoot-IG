@@ -22,7 +22,7 @@ public class Chat {
 	@OneToMany(mappedBy = "chat")
 	private List<Mensaje> mensajes;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<Usuario> usuarios;
 
 	public Chat() {

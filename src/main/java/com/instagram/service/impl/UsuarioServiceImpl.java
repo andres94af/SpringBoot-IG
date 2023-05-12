@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.instagram.model.Autorizacion;
+import com.instagram.model.Chat;
 import com.instagram.model.Imagen;
 import com.instagram.model.Seguido;
 import com.instagram.model.Usuario;
@@ -118,6 +119,20 @@ public class UsuarioServiceImpl implements IUsuarioService {
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public List<Usuario> findUsuariosChats(Usuario usuario) {
+		List<Chat> chatsDelUsuario = usuario.getChats();
+		List<Usuario> usuariosChats = new ArrayList<>();
+		for (Chat c : chatsDelUsuario) {
+			List<Usuario> usuarios = c.getUsuarios();
+			for (Usuario u : usuarios) {
+				usuariosChats.add(u);
+			}
+		}
+		usuariosChats.removeIf(u -> u.equals(usuario));
+		return usuariosChats;
 	}
 
 }
