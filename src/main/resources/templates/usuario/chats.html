@@ -2,15 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="~{layout/layout.html :: head}"></head>
-<body>
+<body class="bg_chat">
 	<!-- Header -->
 	<div th:replace="~{layout/layout.html :: nav}"></div>
 	<!-- Fin Header -->
 
 	<!-- Contenido de la Pagina -->
 	<div class="container-fluid text center mt-2">
-		<div class="row justify-content-center">
-			<div class="col-md-7 espacio border mt-3">
+		<div class="row justify-content-center" >
+			<div class="col-md-7 espacio border mt-3 bg_white">
 				<div class="row">
 					<div class="col-md-4 border-end px-0 pb-3">
 						<h6 class="border-bottom py-3 text-center">
@@ -28,7 +28,7 @@
 									</div>
 									<div class="col mb-2">
 										<h6 class="card-title">
-											<a th:href="@{/perfil/}+${usuario.username}+'/p'"
+											<a th:href="@{/direct/t/}+${chat.id}"
 												th:text="${usuario.username}"
 												class="link-dark link-underline-opacity-0"></a>
 										</h6>
@@ -40,14 +40,28 @@
 							</div>
 						</div>
 					</div>
-					<div class="col text-center align-items-center">
+					<div class="col text-center chat" th:if="${mensajes}">
+						<h6 class="border-bottom py-3">
+							<span th:text=${usuarioLogueado.username}></span>
+						</h6>
+						<div class="chat_cuerpo">
+							<div th:each="msj : ${mensajes}" th:class="${msj.usuario==usuarioLogueado}? chat_msj_propio : chat_msj_particip">
+								<p th:text="${msj.texto}" th:class="${msj.usuario==usuarioLogueado}? 'text-end m-0' : 'text-start m-0'"></p>
+							</div>
+						</div>
+						<form th:action="@{/direct/send}" method="post">
+							<input type="hidden" name="chatId" id="chatId" th:value="${chat.id}">
+							<input type="text" placeholder="Enviar mensaje..." name="mensaje" id="mensaje" class="input-chat">
+						</form>
+					</div>
+					<div class="col text-center align-items-center" th:unless="${mensajes}">
 						<div class="p-4">
 							<h4>
 								<i class="display-1 bi bi-send"></i>
 							</h4>
 							<h5>Tus mensajes</h5>
 							<button type="button" class="btn btn-sm btn-primary btn-azul"
-								data-bs-toggle="modal" data-bs-target="#nuevoMensaje">Enviar
+								data-bs-toggle="modal" data-bs-target="#nuevoChat">Enviar
 								mensaje</button>
 						</div>
 					</div>
@@ -58,7 +72,7 @@
 	<!-- FIN Contenido de la Pagina -->
 
 	<!-- Modal Seguidores -->
-	<div class="modal fade" id="nuevoMensaje" tabindex="-1"
+	<div class="modal fade" id="nuevoChat" tabindex="-1"
 		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">

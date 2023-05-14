@@ -1,3 +1,7 @@
+.bg_white{
+	background-color: white;
+}
+
 .espacio {
 	margin-left: 15rem;
 }
@@ -89,4 +93,44 @@
 	height: 3rem;
 	border-radius: 50%;
 	border: solid 1px lightgray;
+}
+
+.chat {
+	height: calc(100vh - 3rem);
+	max-height: calc(100vh - 3rem);
+}
+
+.bg_chat{
+	background-color: #FAFAFA;
+}
+
+.chat_cuerpo{
+	margin: 1rem;
+	height: 80%;
+	vertical-align:text-bottom;	
+}
+
+.chat_msj_propio{
+	background-color: #EFEFEF;	
+	padding: 0.5rem;
+	margin: 0.5rem;
+	border-radius: 30px;
+}
+
+.chat_msj_particip{	
+	padding: 0.5rem;
+	margin: 0.5rem;
+	border-radius: 30px;
+	border: solid 1px lightgray;
+}
+
+.input-chat {
+	border: solid 1px lightgray;
+	border-radius: 30px;
+	width: 90%;
+	padding: 0.5rem;
+}
+
+.input-chat:focus {
+	outline: none;
 }
