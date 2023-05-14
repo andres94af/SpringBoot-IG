@@ -258,6 +258,12 @@
 			var date = new Date();
 			document.getElementById("añoFooter").innerHTML = date.getFullYear();
 		</script>
+		<script>
+			window.onload = function() {
+				var elemento = document.getElementById("chatCuerpo");
+				elemento.scrollTop = elemento.scrollHeight;
+			}
+		</script>
 	</div>
 	<!-- FIN Fragmento Scripts -->
 </body>

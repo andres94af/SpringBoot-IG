@@ -9,52 +9,67 @@
 
 	<!-- Contenido de la Pagina -->
 	<div class="container-fluid text center mt-2">
-		<div class="row justify-content-center" >
+		<div class="row justify-content-center">
 			<div class="col-md-7 espacio border mt-3 bg_white">
 				<div class="row">
-					<div class="col-md-4 border-end px-0 pb-3">
-						<h6 class="border-bottom py-3 text-center">
+					<div class="col-md-4 border-end p-0">
+						<h6 class="border-bottom py-3 text-center m-0">
 							<span th:text=${usuarioLogueado.username}></span> <span><i
 								class="bi bi-chevron-down"></i></span>
 						</h6>
 						<div th:if="${chats.size()<1}" class="text-center p-4">
 							<h6>No tienes ningun chat</h6>
 						</div>
-						<div th:each="chat : ${chats}">
-							<div th:each="usuarios : ${chat.usuarios}">
-								<div class="row mt-3" th:each="usuario : ${usuarios}" th:if="${usuario!=usuarioLogueado}">
-									<div class="col-auto pr-0">
-										<img th:src="${usuario.imgPerfil.url}" class="img-chat ms-3">
-									</div>
-									<div class="col mb-2">
-										<h6 class="card-title">
-											<a th:href="@{/direct/t/}+${chat.id}"
-												th:text="${usuario.username}"
-												class="link-dark link-underline-opacity-0"></a>
-										</h6>
-										<p class="card-text text-secondary">
-											<small>(Activo/a)</small>
-										</p>
+						<div class="lista-chats">
+							<div th:each="chat : ${chats}">
+								<div th:each="usuarios : ${chat.usuarios}">
+									<div class="row mt-3" style="width: 100%;"
+										th:each="usuario : ${usuarios}"
+										th:if="${usuario!=usuarioLogueado}">
+										<div class="col-auto pr-0">
+											<img th:src="${usuario.imgPerfil.url}" class="img-chat ms-3">
+										</div>
+										<div class="col-auto mb-2">
+											<h6 class="card-title">
+												<a th:href="@{/direct/t/}+${chat.id}"
+													th:text="${usuario.username}"
+													class="link-dark link-underline-opacity-0"></a>
+											</h6>
+											<p class="card-text text-secondary">
+												<small>(Activo/a)</small>
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col text-center chat" th:if="${mensajes}">
-						<h6 class="border-bottom py-3">
-							<span th:text=${usuarioLogueado.username}></span>
+					<div class="col text-center chat p-0" th:if="${mensajes}">
+						<h6 class="border-bottom py-3 m-0"
+							th:each="usuario : ${chat.usuarios}"
+							th:if="${usuario!=usuarioLogueado}">
+							<a th:href="@{/perfil/}+${usuario.username}+'/p'"
+								class="link-dark link-underline-opacity-0"> <span
+								th:text="${usuario.username}"></span> <span
+								class="text-secondary text-small"><small>(Activo/a)</small></span>
+							</a>
 						</h6>
-						<div class="chat_cuerpo">
-							<div th:each="msj : ${mensajes}" th:class="${msj.usuario==usuarioLogueado}? chat_msj_propio : chat_msj_particip">
-								<p th:text="${msj.texto}" th:class="${msj.usuario==usuarioLogueado}? 'text-end m-0' : 'text-start m-0'"></p>
+						<div class="chat_cuerpo mx-0 mt-0" id="chatCuerpo">
+							<div th:each="msj : ${mensajes}"
+								th:class="${msj.usuario==usuarioLogueado}? chat_msj_propio : chat_msj_particip">
+								<p th:text="${msj.texto}"
+									th:class="${msj.usuario==usuarioLogueado}? 'text-end m-0' : 'text-start m-0'"></p>
 							</div>
 						</div>
 						<form th:action="@{/direct/send}" method="post">
-							<input type="hidden" name="chatId" id="chatId" th:value="${chat.id}">
-							<input type="text" placeholder="Enviar mensaje..." name="mensaje" id="mensaje" class="input-chat">
+							<input type="hidden" name="chatId" id="chatId"
+								th:value="${chat.id}"> <input type="text"
+								placeholder="Enviar mensaje..." name="mensaje" id="mensaje"
+								class="input-chat">
 						</form>
 					</div>
-					<div class="col text-center align-items-center" th:unless="${mensajes}">
+					<div class="col text-center align-items-center"
+						th:unless="${mensajes}">
 						<div class="p-4">
 							<h4>
 								<i class="display-1 bi bi-send"></i>
@@ -72,8 +87,7 @@
 	<!-- FIN Contenido de la Pagina -->
 
 	<!-- Modal Seguidores -->
-	<div class="modal fade" id="nuevoChat" tabindex="-1"
-		aria-hidden="true">
+	<div class="modal fade" id="nuevoChat" tabindex="-1" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">

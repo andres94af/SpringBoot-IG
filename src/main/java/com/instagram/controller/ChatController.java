@@ -29,10 +29,10 @@ public class ChatController {
 
 	@Autowired
 	IUsuarioService usuarioService;
-	
+
 	@Autowired
 	IChatService chatService;
-	
+
 	@Autowired
 	IMensajeService mensajeService;
 
@@ -51,18 +51,18 @@ public class ChatController {
 		model.addAttribute("chats", chats);
 		return "usuario/chats";
 	}
-	
+
 	// REDIRECCION A LA VISTA MENSAJES DEL USUARIO CON UN CHAT ABIERTO
 	@GetMapping("/t/{chatId}")
 	public String abrirChat(Model model, HttpSession session, @PathVariable("chatId") String id) {
 		try {
-			Optional<Chat> chatAbierto = chatService.findById(Integer.valueOf(id));			
+			Optional<Chat> chatAbierto = chatService.findById(Integer.valueOf(id));
 			if (chatAbierto.isPresent()) {
 				inbox(model, session);
 				List<Mensaje> mensajes = chatAbierto.get().getMensajes();
 				model.addAttribute("title", "Spring Boot IG • Chats");
-				model.addAttribute("chat", chatAbierto.get());	
-				model.addAttribute("mensajes", mensajes);			
+				model.addAttribute("chat", chatAbierto.get());
+				model.addAttribute("mensajes", mensajes);
 				return "usuario/chats";
 			}
 		} catch (NumberFormatException e) {
@@ -70,7 +70,7 @@ public class ChatController {
 		}
 		return "redirect:/direct/inbox";
 	}
-	
+
 	// REDIRECCION A LA VISTA MENSAJES DEL USUARIO LOGUEADO
 	@GetMapping("/new/{id}")
 	public String nuevoChat(Model model, HttpSession session, @PathVariable("id") Integer id) {
@@ -91,19 +91,20 @@ public class ChatController {
 			usuarioService.update(usuarioLogueado.get());
 			usuarioService.update(usuarioChat.get());
 		}
-		return "redirect:/direct/t/"+chat.getId();
+		return "redirect:/direct/t/" + chat.getId();
 	}
-	
+
 	// REDIRECCION A LA VISTA MENSAJES DEL USUARIO LOGUEADO
 	@PostMapping("/send")
-	public String enviarMensaje(HttpSession session, @RequestParam("mensaje") String mensaje, @RequestParam("chatId") Integer chatId) {
+	public String enviarMensaje(HttpSession session, @RequestParam("mensaje") String mensaje,
+			@RequestParam("chatId") Integer chatId) {
 		Optional<Usuario> usuarioLogueado = usuarioService.findById((Integer) session.getAttribute("idUsuario"));
 		Optional<Chat> chat = chatService.findById(chatId);
-		if (usuarioLogueado.isPresent() && chat.isPresent() && mensaje!="") {
+		if (usuarioLogueado.isPresent() && chat.isPresent() && mensaje != "") {
 			Mensaje msjNuevo = new Mensaje(usuarioLogueado.get(), chat.get(), mensaje);
 			mensajeService.save(msjNuevo);
 		}
-		return "redirect:/direct/t/"+chatId;
+		return "redirect:/direct/t/" + chatId + "#mensaje";
 	}
 
 }

@@ -104,10 +104,16 @@
 	background-color: #FAFAFA;
 }
 
+.lista-chats{
+	height: calc(100vh - 6.3rem);
+	overflow-y: scroll;
+}
+
 .chat_cuerpo{
 	margin: 1rem;
-	height: 80%;
-	vertical-align:text-bottom;	
+	height: 83%;
+	vertical-align:text-bottom;
+	overflow-y: scroll;
 }
 
 .chat_msj_propio{
@@ -118,7 +124,7 @@
 }
 
 .chat_msj_particip{	
-	padding: 0.5rem;
+	padding: 0.6rem;
 	margin: 0.5rem;
 	border-radius: 30px;
 	border: solid 1px lightgray;
